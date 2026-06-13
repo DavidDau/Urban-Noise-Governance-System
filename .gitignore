@@ -1,0 +1,29 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Datasets
+ml/data/raw/
+ml/data/processed/
+ml/data/features/
+
+# Saved Models
+ml/saved_models/
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/settings.json
