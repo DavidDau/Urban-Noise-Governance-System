@@ -13,10 +13,12 @@ tensorflow
 joblib
 
 jupyter
+ipykernel
 
 tqdm
 
 fastapi
 uvicorn
+python-multipart
 
 plotly
