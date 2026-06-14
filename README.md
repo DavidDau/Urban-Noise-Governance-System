@@ -1,207 +1,222 @@
-Machine Learning-Based Context-Aware Urban Acoustic Event Classification for Smart Noise Governance
+# Machine Learning-Based Context-Aware Urban Acoustic Event Classification for Smart Noise Governance
+
 Urban Noise Governance System
 
-GitHub Repository: https://github.com/DavidDau/Urban-Noise-Governance-System
+GitHub Repository: [https://github.com/DavidDau/Urban-Noise-Governance-System](https://github.com/DavidDau/Urban-Noise-Governance-System)
 
-Overview
+---
 
-This capstone project explores the use of Machine Learning (ML) for contextual urban noise analysis. Traditional noise monitoring systems primarily measure sound intensity in decibels (dB) but often fail to identify the source of the noise. As a result, decision-makers lack sufficient contextual information to determine appropriate mitigation strategies.
+## Overview
 
-The proposed Urban Noise Governance System addresses this limitation by automatically classifying urban acoustic events into meaningful categories such as Traffic, Construction, Entertainment, and Ambience. By combining audio signal processing and machine learning techniques, the system provides contextual acoustic intelligence that supports smarter noise governance and informed decision-making.
+This capstone project applies machine learning to urban acoustic event classification to support smarter noise governance.
 
-Problem Statement
+Traditional noise monitoring systems focus mainly on sound intensity (decibels), which is useful for detecting noise levels but insufficient for identifying noise sources. This limits the ability of city planners and authorities to take targeted action.
 
-Urban noise pollution is becoming an increasingly significant environmental and public health challenge, particularly in rapidly growing cities. Existing approaches to noise management rely heavily on decibel measurements, manual inspections, and public complaints. While these methods can determine whether noise exceeds legal thresholds, they cannot automatically identify the source of the noise.
+This system addresses that gap by classifying environmental sounds into meaningful urban categories such as traffic, construction, entertainment, and ambience. By combining audio signal processing with deep learning, the system provides contextual insights that support better decision-making in urban noise management.
 
-This limitation creates challenges for venue owners, businesses, local authorities, and urban planners who require contextual information to make informed noise management decisions.
+---
 
-This project seeks to bridge this gap by developing a machine learning-based acoustic event classification system capable of identifying urban sound sources from audio recordings.
+## Problem Statement
 
-Project Objectives
-Main Objective
+Urban noise pollution is a growing environmental and public health issue, especially in rapidly developing cities.
 
-To develop a machine learning-based system that classifies urban acoustic events and provides contextual acoustic intelligence for improved urban noise governance.
+Current noise monitoring approaches rely on:
 
-Specific Objectives
-Analyze and prepare urban sound datasets for machine learning classification.
-Develop and compare multiple machine learning models for acoustic event classification.
-Evaluate model performance using standard classification metrics.
-Develop a prototype API capable of receiving audio files and returning classification results.
-Demonstrate the feasibility of contextual noise analysis for smart urban management.
-Target Sound Categories
+* Decibel measurements
+* Manual inspections
+* Public complaints
 
-The MVP classifies audio recordings into the following categories:
+While these methods can detect excessive noise levels, they cannot automatically identify the source of the noise. This makes it difficult for stakeholders such as urban planners, businesses, and regulators to apply effective mitigation strategies.
 
-Traffic
-Construction
-Entertainment
-Ambience
+This project aims to solve this limitation by building a machine learning system capable of identifying urban sound sources from audio recordings.
 
-These categories were created by grouping UrbanSound8K classes into broader urban noise governance categories.
+---
 
-Datasets
-Current Dataset
-UrbanSound8K
+## Objectives
 
-The current implementation uses the UrbanSound8K dataset for data preprocessing, feature extraction, model training, and evaluation.
+### Main Objective
 
-Future Datasets
+To develop a machine learning system that classifies urban acoustic events and provides contextual insights for improved noise governance.
 
-The following datasets are planned for future experimentation and model enhancement:
+### Specific Objectives
 
-ESC-50
-SONYC Urban Sound Dataset
-Local Kigali Audio Dataset
-Technology Stack
-Machine Learning
-Python
-TensorFlow
-Scikit-learn
-Librosa
-NumPy
-Pandas
-Data Visualization
-Matplotlib
-Seaborn
-API Development
-FastAPI
-Swagger UI
-Database (Future Work)
-PostgreSQL
-Frontend (Future Work)
-HTML
-CSS
-Bootstrap
-Implemented Machine Learning Workflow
+* Prepare and process urban sound datasets for machine learning
+* Develop and compare multiple machine learning models for classification
+* Evaluate models using standard performance metrics
+* Deploy a working API for real-time audio classification
+* Demonstrate the feasibility of context-aware noise analysis in smart cities
 
-The machine learning pipeline was implemented through the following notebooks:
+---
 
-Audio Preprocessing
-Feature Extraction
-Dataset Creation
-Baseline Model Development
-CNN Model Training
-Model Comparison
-Inference Pipeline
-API Demonstration
-Feature Extraction
+## Target Classes
 
-The project uses:
+The system classifies audio into four main categories:
 
-Mel Spectrograms
-MFCCs
-Chroma Features
-Spectral Centroid
-Spectral Rolloff
-Zero Crossing Rate
-Implemented Models
-Random Forest Classifier
+* Traffic
+* Construction
+* Entertainment
+* Ambience
 
-Used as the baseline machine learning model.
+These categories are derived by grouping classes from the UrbanSound8K dataset into broader governance-focused labels.
 
-Convolutional Neural Network (CNN)
+---
 
-Used as the primary deep learning model for spectrogram-based acoustic event classification.
+## Dataset
 
-Support Vector Machine (SVM)
+### Primary Dataset
 
-Considered during model selection but not included in the MVP implementation.
+* UrbanSound8K
 
-Evaluation Metrics
+This dataset is used for preprocessing, feature extraction, model training, and evaluation.
 
-The models were evaluated using:
+### Future Datasets
 
-Accuracy
-Precision
-Recall
-F1 Score
-Confusion Matrix
-Model Results
-Random Forest Baseline
-Metric Score
-Accuracy 0.82
-Precision 0.81
-Recall 0.80
-F1 Score 0.80
-CNN Model
-Metric Score
-Accuracy 0.92
-Precision 0.92
-Recall 0.92
-F1 Score 0.92
+* ESC-50
+* SONYC Urban Sound Dataset
+* Local Kigali Audio Dataset
 
-The CNN achieved the highest overall performance and was selected as the final model for deployment.
+---
 
-API Prototype
+## Technology Stack
 
-The MVP includes a FastAPI deployment prototype demonstrating how the trained CNN model can be exposed as a prediction service.
+### Machine Learning
 
-Endpoint
+Python, TensorFlow, Scikit-learn, Librosa, NumPy, Pandas
+
+### Visualization
+
+Matplotlib, Seaborn
+
+### API Development
+
+FastAPI, Swagger UI
+
+### Future Enhancements
+
+PostgreSQL, HTML, CSS, Bootstrap
+
+---
+
+## Machine Learning Pipeline
+
+The system follows a structured ML workflow:
+
+* Audio preprocessing
+* Feature extraction
+* Dataset preparation
+* Baseline model development
+* CNN model training
+* Model evaluation and comparison
+* Inference pipeline design
+* API deployment
+
+---
+
+## Feature Extraction
+
+The model uses multiple audio features, including:
+
+* Mel Spectrograms
+* MFCCs
+* Chroma Features
+* Spectral Centroid
+* Spectral Rolloff
+* Zero Crossing Rate
+
+---
+
+## Models Implemented
+
+### Random Forest Classifier
+
+Used as a baseline model for initial performance comparison.
+
+### Convolutional Neural Network (CNN)
+
+Primary model used for final deployment, trained on Mel spectrograms.
+
+### Support Vector Machine (SVM)
+
+Evaluated during experimentation but not included in the final MVP.
+
+---
+
+## Model Performance
+
+### Random Forest (Baseline)
+
+* Accuracy: 0.82
+* Precision: 0.81
+* Recall: 0.80
+* F1 Score: 0.80
+
+### CNN Model (Final)
+
+* Accuracy: 0.92
+* Precision: 0.92
+* Recall: 0.92
+* F1 Score: 0.92
+
+The CNN model achieved the best performance and was selected for deployment.
+
+---
+
+## API Prototype
+
+A FastAPI-based inference service exposes the trained model for real-time predictions.
+
+### Endpoint
 
 POST /predict
 
-Input
+### Input
 
-Audio file (.wav)
+Audio file in WAV format
 
-Example Response
+### Example Response
+
+```json
 {
-"prediction": "Construction",
-"confidence": 0.92
+  "prediction": "Construction",
+  "confidence": 0.92
 }
+```
 
-Swagger UI documentation is available through:
+Swagger documentation is available at:
 
-http://localhost:8000/docs
+[http://localhost:8000/docs](http://localhost:8000/docs)
 
-Designs and Mockups
+---
 
-The project includes mockups and interface designs demonstrating:
-
-Landing Page
-Audio Upload Interface
-Classification Results Dashboard
-Historical Reports Page
-API Swagger UI
-
-Screenshots and design assets are stored in the project documentation folder.
-
-Deployment Plan
-MVP Phase
-Local development environment
-FastAPI backend
-Swagger UI testing
-Deployment Architecture
+## System Architecture
 
 User
-↓
-API Request
-↓
-FastAPI Backend
-↓
-CNN Model
-↓
-Prediction Response
+→ API Request
+→ FastAPI Backend
+→ CNN Model
+→ Prediction Response
 
-Future Deployment
+---
 
-User
-↓
-Web Application
-↓
-FastAPI Backend
-↓
-Machine Learning Model
-↓
-PostgreSQL Database
+## Deployment Plan
 
-Potential hosting platforms:
+### MVP Phase
 
-Render
-Railway
-AWS
-Azure
-Project Structure
+* Local FastAPI deployment
+* Swagger UI testing
+* Model inference validation
+
+### Future Deployment
+
+* Web application interface
+* Database integration (PostgreSQL)
+* Cloud deployment (AWS / Azure / Render / Railway)
+
+---
+
+## Project Structure
+
+```
 Urban-Noise-Governance-System/
 
 README.md
@@ -214,51 +229,70 @@ ml/
 
 deployment/
 ├── app.py
-└── requirements.txt
+└── models/
 
 docs/
 └── screenshots/
-Expected Outcomes
+```
 
-The project demonstrates that machine learning can provide contextual understanding of urban noise sources beyond traditional decibel measurements.
+---
 
-The system supports:
+## Expected Outcomes
 
-Urban sound source identification
-Context-aware noise analysis
-Improved decision-making for noise management
-Future integration into smart city initiatives
-Installation
+This project demonstrates that machine learning can move urban noise analysis beyond simple decibel measurement toward contextual understanding of sound sources.
 
-Clone the repository:
+The system enables:
 
+* Identification of urban sound sources
+* Context-aware noise classification
+* Improved urban planning decisions
+* Foundation for smart city noise governance systems
+
+---
+
+## Installation
+
+### Clone repository
+
+```
 git clone https://github.com/DavidDau/Urban-Noise-Governance-System.git
+```
 
-Navigate to the project directory:
+### Navigate to project
 
+```
 cd Urban-Noise-Governance-System
+```
 
-Create a virtual environment:
+### Create virtual environment
 
+```
 python -m venv .venv
+```
 
-Activate the environment:
+### Activate environment
 
+```
 .venv\Scripts\activate
+```
 
-Install dependencies:
+### Install dependencies
 
+```
 pip install -r requirements.txt
+```
 
-Run the FastAPI server:
+### Run API
 
+```
 uvicorn app:app --reload
-Author
+```
+
+---
+
+## Author
 
 David Cyubahiro
-
 Bachelor of Science in Machine Learning
-
 African Leadership University (ALU)
-
-Capstone Project – 2026
+Capstone Project 2026
