@@ -1,4 +1,4 @@
-from venue_limits import LIMITS
+from .venue_limits import LIMITS
 
 
 def check_compliance(

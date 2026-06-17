@@ -1,23 +1,47 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException
-from tensorflow.keras.models import load_model
-import numpy as np
-import librosa
-import joblib
-import tempfile
+import sys
+from pathlib import Path
 import os
+import tempfile
+
+import joblib
+import librosa
+import numpy as np
+
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException
+from tensorflow.keras.models import load_model
+
+
+# =====================================================
+# Project Root
+# =====================================================
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(str(ROOT_DIR))
+
+
+# =====================================================
+# Noise Analysis Imports
+# =====================================================
+
+from noise_analysis.loudness import estimate_db
+from noise_analysis.compliance import check_compliance
+from noise_analysis.recommendations import get_recommendation
+from noise_analysis.time_utils import get_time_period
+
 
 # =====================================================
 # FastAPI App
 # =====================================================
 
 app = FastAPI(
-    title="Urban Acoustic Event Classification API",
-    description="CNN-based API for classifying urban environmental sounds.",
-    version="1.0"
+    title="Urban Noise Governance API",
+    description="Urban Acoustic Event Classification, Loudness Assessment and Governance Recommendation System",
+    version="2.0"
 )
 
+
 # =====================================================
-# Paths (FIXED: absolute paths based on file location)
+# Paths
 # =====================================================
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -26,18 +50,19 @@ MODEL_DIR = os.path.join(BASE_DIR, "models")
 MODEL_PATH = os.path.join(MODEL_DIR, "urban_noise_cnn.keras")
 ENCODER_PATH = os.path.join(MODEL_DIR, "label_encoder.pkl")
 
+
 # =====================================================
-# Load Model + Label Encoder
+# Load Model + Encoder
 # =====================================================
 
 try:
     model = load_model(MODEL_PATH)
     label_encoder = joblib.load(ENCODER_PATH)
 
-    print("Model and label encoder loaded successfully.")
+    print("Model loaded successfully.")
 
 except Exception as e:
-    print(f"Error loading model files: {e}")
+    print(f"Error loading model: {e}")
     raise e
 
 
@@ -46,10 +71,6 @@ except Exception as e:
 # =====================================================
 
 def preprocess_audio(audio_path):
-    """
-    Convert audio file into a 128x128 Mel Spectrogram.
-    """
-
     signal, sample_rate = librosa.load(audio_path, sr=22050)
 
     mel_spec = librosa.feature.melspectrogram(
@@ -58,20 +79,22 @@ def preprocess_audio(audio_path):
         n_mels=128
     )
 
-    mel_spec_db = librosa.power_to_db(mel_spec, ref=np.max)
+    mel_spec_db = librosa.power_to_db(
+        mel_spec,
+        ref=np.max
+    )
 
-    # Pad or trim to 128 time frames
     if mel_spec_db.shape[1] < 128:
         padding = 128 - mel_spec_db.shape[1]
+
         mel_spec_db = np.pad(
             mel_spec_db,
-            pad_width=((0, 0), (0, padding)),
+            ((0, 0), (0, padding)),
             mode="constant"
         )
     else:
         mel_spec_db = mel_spec_db[:, :128]
 
-    # Add channel + batch dimensions
     mel_spec_db = np.expand_dims(mel_spec_db, axis=-1)
     mel_spec_db = np.expand_dims(mel_spec_db, axis=0)
 
@@ -84,7 +107,7 @@ def preprocess_audio(audio_path):
 
 @app.get("/")
 def home():
-    return {"message": "Urban Noise Classification API is running."}
+    return {"message": "Urban Noise Governance API is running."}
 
 
 # =====================================================
@@ -92,37 +115,77 @@ def home():
 # =====================================================
 
 @app.post("/predict")
-async def predict_audio(file: UploadFile = File(...)):
+async def predict_audio(
+    file: UploadFile = File(...),
+    venue_type: str = Form(...),
+    recording_time: str = Form(...)
+):
 
-    if not file.filename.endswith(".wav"):
+    if not file.filename.lower().endswith(".wav"):
         raise HTTPException(
             status_code=400,
-            detail="Only WAV audio files are supported."
+            detail="Only WAV files are supported."
         )
 
     temp_path = None
 
     try:
-        # Save temp file
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_file:
+        with tempfile.NamedTemporaryFile(
+            delete=False,
+            suffix=".wav"
+        ) as temp_file:
             temp_file.write(await file.read())
             temp_path = temp_file.name
 
-        # Preprocess
+        # -------------------------
+        # CNN Classification
+        # -------------------------
+
         features = preprocess_audio(temp_path)
 
-        # Predict
         predictions = model.predict(features)
 
         predicted_index = int(np.argmax(predictions))
-        confidence = float(np.max(predictions) * 100)
+        confidence = float(np.max(predictions))
 
-        # Decode label
-        predicted_label = label_encoder.inverse_transform([predicted_index])[0]
+        predicted_label = label_encoder.inverse_transform(
+            [predicted_index]
+        )[0]
+
+        # -------------------------
+        # Noise Analysis
+        # -------------------------
+
+        estimated_db = estimate_db(temp_path)
+
+        time_period = get_time_period(recording_time)
+
+        compliance = check_compliance(
+            estimated_db,
+            venue_type,
+            time_period
+        )
+
+        recommendation = get_recommendation(
+            predicted_label,
+            compliance["status"]
+        )
+
+        # -------------------------
+        # Response
+        # -------------------------
 
         return {
-            "prediction": predicted_label,
-            "confidence": round(confidence, 2)
+            "source": predicted_label,
+            "confidence": round(confidence, 4),
+            "estimated_db": estimated_db,
+            "venue_type": venue_type,
+            "recording_time": recording_time,
+            "time_period": time_period,
+            "legal_limit": compliance["legal_limit"],
+            "status": compliance["status"],
+            "exceedance": compliance["exceedance"],
+            "recommendation": recommendation
         }
 
     except Exception as e:
