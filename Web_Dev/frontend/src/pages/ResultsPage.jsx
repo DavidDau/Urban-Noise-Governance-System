@@ -41,6 +41,9 @@ function ResultsPage() {
           <b>Estimated dB:</b> {result.estimated_db}
         </p>
         <p>
+          <b>Severity:</b> {result.severity}
+        </p>
+        <p>
           <b>Venue:</b> {result.venue_type}
         </p>
         <p>
