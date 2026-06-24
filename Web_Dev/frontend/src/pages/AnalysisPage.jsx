@@ -6,19 +6,28 @@ function AnalysisPage() {
   const navigate = useNavigate();
 
   const [file, setFile] = useState(null);
+
   const [venueType, setVenueType] = useState("Residential Zone");
+
   const [recordingTime, setRecordingTime] = useState("");
+
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file || !recordingTime) {
-      alert("Please provide all fields.");
+    if (!file) {
+      alert("Please upload a WAV file.");
+      return;
+    }
+
+    if (!recordingTime) {
+      alert("Please select recording time.");
       return;
     }
 
     const formData = new FormData();
+
     formData.append("file", file);
     formData.append("venue_type", venueType);
     formData.append("recording_time", recordingTime);
@@ -45,8 +54,9 @@ function AnalysisPage() {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Audio File (.wav):</label>
+          <label>Audio File (.wav)</label>
           <br />
+
           <input
             type="file"
             accept=".wav"
@@ -57,27 +67,35 @@ function AnalysisPage() {
         <br />
 
         <div>
-          <label>Venue Type:</label>
+          <label>Venue Type</label>
           <br />
+
           <select
             value={venueType}
             onChange={(e) => setVenueType(e.target.value)}
           >
-            <option>Residential Zone</option>
-            <option>Commercial Zone</option>
-            <option>Industrial Zone</option>
-            <option>Quiet Zone</option>
-            <option>Special Quiet Zone</option>
-            <option>Soundproof Venue</option>
-            <option>Non-Soundproof Venue</option>
+            <option value="Residential Zone">Residential Zone</option>
+
+            <option value="Commercial Zone">Commercial Zone</option>
+
+            <option value="Industrial Zone">Industrial Zone</option>
+
+            <option value="Quiet Zone">Quiet Zone</option>
+
+            <option value="Special Quiet Zone">Special Quiet Zone</option>
+
+            <option value="Soundproof Venue">Soundproof Venue</option>
+
+            <option value="Non-Soundproof Venue">Non-Soundproof Venue</option>
           </select>
         </div>
 
         <br />
 
         <div>
-          <label>Recording Time:</label>
+          <label>Recording Time</label>
           <br />
+
           <input
             type="time"
             value={recordingTime}
