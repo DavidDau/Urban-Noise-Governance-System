@@ -5,11 +5,16 @@ import AnalysisPage from "./pages/AnalysisPage";
 import ResultsPage from "./pages/ResultsPage";
 import HistoryPage from "./pages/HistoryPage";
 import DashboardPage from "./pages/DashboardPage";
+import BackgroundBlobs from "./components/BackgroundBlobs";
+import GrainOverlay from "./components/GrainOverlay";
+import "./App.css";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <BackgroundBlobs />
+      <GrainOverlay />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/analyze" element={<AnalysisPage />} />

@@ -25,5 +25,5 @@ export const getDashboard = async () => {
 };
 
 export const downloadReport = (id) => {
-  window.open(`http://127.0.0.1:8000/report/download/${id}`);
+  window.open(`${API_URL}/report/download/${id}`, "_blank");
 };

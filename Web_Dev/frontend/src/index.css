@@ -1,4 +1,221 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Reenie+Beanie&display=swap");
+@import "./styles/theme.css";
+
+:root {
+  /* LIGHT THEME */
+  --background: #fdfcf8;
+  --card: #ffffff;
+  --primary: #ffb7b2;
+  --secondary: #e8efe8;
+  --lavender: #efedf4;
+
+  --text: #292524;
+  --muted: #78716c;
+
+  --border: #e7e5e4;
+
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  --radius-sm: 16px;
+  --radius-md: 24px;
+  --radius-lg: 36px;
+
+  --transition: all 0.3s ease;
+
+  --status-green-bg: #dcfce7;
+  --status-green-text: #15803d;
+  --status-amber-bg: #fef3c7;
+  --status-amber-text: #b45309;
+  --status-coral-bg: #ffe4e1;
+  --status-coral-text: #c2410c;
+}
+
+[data-theme="dark"] {
+  /* DARK THEME */
+  --background: #121212;
+  --card: #1e1e1e;
+  --primary: #ff8e88;
+  --secondary: #2b2b2b;
+  --lavender: #24242b;
+
+  --text: #f5f5f5;
+  --muted: #b0b0b0;
+
+  --border: #333333;
+
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.45);
+
+  --status-green-bg: #14532d;
+  --status-green-text: #86efac;
+  --status-amber-bg: #78350f;
+  --status-amber-text: #fcd34d;
+  --status-coral-bg: #7f1d1d;
+  --status-coral-text: #fca5a5;
+}
+
+* {
   margin: 0;
-  background: #f4f6f8;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Outfit", sans-serif;
+  background: var(--background);
+  color: var(--text);
+  min-height: 100vh;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Outfit", sans-serif;
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+h3 {
+  font-size: clamp(1.2rem, 3vw, 2rem);
+}
+
+p {
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.script {
+  font-family: "Reenie Beanie", cursive;
+}
+
+.page {
+  width: min(1400px, 100%);
+  margin: 0 auto;
+  padding: 120px 32px 60px;
+  position: relative;
+  z-index: 2;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.primary-btn {
+  background: var(--primary);
+  color: var(--text);
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.secondary-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 14px 28px;
+  border-radius: 999px;
+  transition: var(--transition);
+}
+
+.secondary-btn:hover {
+  transform: translateY(-2px);
+}
+
+.section-title {
+  margin-bottom: 18px;
+}
+
+.section-subtitle {
+  max-width: 700px;
+  margin-bottom: 48px;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: reveal 0.8s ease forwards;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 100px 20px 40px;
+  }
 }
