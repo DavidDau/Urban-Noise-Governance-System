@@ -2,9 +2,10 @@
 @import "./styles/theme.css";
 
 :root {
-  /* LIGHT THEME */
-  --background: #fdfcf8;
-  --card: #ffffff;
+  /* LIGHT THEME — softened paper tone */
+  --background: #f0ebe4;
+  --card: #faf8f4;
+  --surface-muted: #f5f2ed;
   --primary: #ffb7b2;
   --secondary: #e8efe8;
   --lavender: #efedf4;
@@ -35,6 +36,7 @@
   /* DARK THEME */
   --background: #121212;
   --card: #1e1e1e;
+  --surface-muted: #2a2a2a;
   --primary: #ff8e88;
   --secondary: #2b2b2b;
   --lavender: #24242b;
