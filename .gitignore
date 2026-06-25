@@ -1,6 +1,7 @@
-# Virtual Environment
+# Virtual Environments
 .venv/
 venv/
+
 
 # Python Cache
 __pycache__/
@@ -14,9 +15,19 @@ __pycache__/
 ml/data/raw/
 ml/data/processed/
 ml/data/features/
-
-# Saved Models
+ 
+# Trained Models
 ml/saved_models/
+
+# Backend Generated Files
+Web_Dev/backend/noisegov.db
+Web_Dev/backend/reports/
+Web_Dev/backend/.env
+
+# Frontend Generated Files
+Web_Dev/frontend/node_modules/
+Web_Dev/frontend/dist/
+Web_Dev/frontend/.env
 
 # Logs
 *.log

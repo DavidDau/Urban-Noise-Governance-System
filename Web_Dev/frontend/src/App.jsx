@@ -4,6 +4,7 @@ import LandingPage from "./pages/LandingPage";
 import AnalysisPage from "./pages/AnalysisPage";
 import ResultsPage from "./pages/ResultsPage";
 import HistoryPage from "./pages/HistoryPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/analyze" element={<AnalysisPage />} />
         <Route path="/results" element={<ResultsPage />} />
         <Route path="/history" element={<HistoryPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
     </BrowserRouter>
   );

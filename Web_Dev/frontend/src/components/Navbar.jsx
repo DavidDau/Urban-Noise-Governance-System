@@ -15,6 +15,7 @@ function Navbar() {
         <Link to="/history" style={styles.link}>
           History
         </Link>
+        <Link to="/dashboard">Dashboard</Link>
       </div>
     </div>
   );

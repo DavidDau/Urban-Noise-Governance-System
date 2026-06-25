@@ -34,7 +34,8 @@ function AnalysisPage() {
 
     try {
       setLoading(true);
-
+      console.log(venueType);
+      console.log(recordingTime);
       const result = await analyzeNoise(formData);
 
       navigate("/results", {
