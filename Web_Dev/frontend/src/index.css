@@ -3,10 +3,10 @@
 
 :root {
   /* LIGHT THEME — softened paper tone */
-  --background: #f0ebe4;
+  --background: #adaaaa;
   --card: #faf8f4;
   --surface-muted: #f5f2ed;
-  --primary: #ffb7b2;
+  --primary: #ff6a00;
   --secondary: #e8efe8;
   --lavender: #efedf4;
 
@@ -27,9 +27,9 @@
   --status-green-bg: #dcfce7;
   --status-green-text: #15803d;
   --status-amber-bg: #fef3c7;
-  --status-amber-text: #b45309;
+  --status-amber-text: #ff3300;
   --status-coral-bg: #ffe4e1;
-  --status-coral-text: #c2410c;
+  --status-coral-text: #ff3300;
 }
 
 [data-theme="dark"] {
@@ -37,7 +37,7 @@
   --background: #121212;
   --card: #1e1e1e;
   --surface-muted: #2a2a2a;
-  --primary: #ff8e88;
+  --primary: #ff6a00;
   --secondary: #2b2b2b;
   --lavender: #24242b;
 
@@ -72,14 +72,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/*Seamless transition*/
+body,
+#root,
+header,
+nav,
+main,
+section,
+div,
+.card {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
 body {
   font-family: "Outfit", sans-serif;
   background: var(--background);
   color: var(--text);
   min-height: 100vh;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
   overflow-x: hidden;
 }
 
@@ -220,4 +233,49 @@ p {
   .page {
     padding: 100px 20px 40px;
   }
+}
+
+.theme-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  cursor: pointer;
+}
+
+/* Hide native checkbox from sight but keep keyboard accessible */
+.theme-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Track capsule background */
+.theme-toggle-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2b2b2b;
+  border-radius: 28px;
+  transition: background-color 0.25s ease;
+}
+
+/* Inner slider circle handle */
+.theme-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #c9c9c9; /* Solid white handle circle */
+  border-radius: 50%;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Slide circle handle to the right when active */
+.theme-toggle-switch input:checked + .theme-toggle-slider:before {
+  transform: translateX(24px);
 }
