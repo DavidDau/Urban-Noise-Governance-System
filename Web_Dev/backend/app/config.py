@@ -6,10 +6,10 @@ ENV = os.getenv("ENVIRONMENT", "development")
 DEBUG = ENV == "development"
 
 # Database
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql://noisegov_user:lcRlcuWIOAYVaqJPS2LwUCa5ZiA5O5rE@dpg-d93l9lcvikkc73ahe4sg-a/noisegov"
-)
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL environment variable is not set.")
 
 # API
 API_HOST = os.getenv("API_HOST", "0.0.0.0")
