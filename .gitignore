@@ -4,6 +4,7 @@ venv/
 env/
 ENV/
 
+
 # Python Cache
 __pycache__/
 *.pyc
@@ -53,6 +54,16 @@ Web_Dev/frontend/dist/
 Web_Dev/frontend/.env
 Web_Dev/frontend/.env.local
 Web_Dev/frontend/.env.production
+
+# Backend Generated Files
+Web_Dev/backend/noisegov.db
+Web_Dev/backend/reports/
+Web_Dev/backend/.env
+
+# Frontend Generated Files
+Web_Dev/frontend/node_modules/
+Web_Dev/frontend/dist/
+Web_Dev/frontend/.env
 
 # Logs
 *.log
