@@ -1,40 +1,72 @@
 # Virtual Environments
 .venv/
 venv/
-
+env/
+ENV/
 
 # Python Cache
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+*.ipynb_checkpoints
 
 # Datasets
 ml/data/raw/
 ml/data/processed/
 ml/data/features/
  
-# Trained Models
+# Trained Models (use Git LFS for large files)
 ml/saved_models/
+*.keras
+*.h5
+*.pkl
+*.joblib
 
 # Backend Generated Files
 Web_Dev/backend/noisegov.db
 Web_Dev/backend/reports/
 Web_Dev/backend/.env
+Web_Dev/backend/.env.local
 
 # Frontend Generated Files
 Web_Dev/frontend/node_modules/
 Web_Dev/frontend/dist/
 Web_Dev/frontend/.env
+Web_Dev/frontend/.env.local
+Web_Dev/frontend/.env.production
 
 # Logs
 *.log
+*.log.*
 
 # OS Files
 .DS_Store
 Thumbs.db
 
-# VS Code
-.vscode/settings.json
+# Temporary files
+*.tmp
+*.temp
+*._*
+
+# Coverage
+.coverage
+htmlcov/

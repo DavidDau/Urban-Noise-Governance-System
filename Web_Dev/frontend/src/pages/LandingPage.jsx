@@ -91,7 +91,7 @@ function LandingPage() {
       {/* 1 — Hero */}
       <section className="hero">
         <div className="hero-inner reveal">
-          <div className="hero-badge">AI-powered urban noise governance</div>
+          <div className="hero-badge">ML powered urban noise governance</div>
 
           <h1 className="hero-title">
             Smarter
@@ -101,7 +101,7 @@ function LandingPage() {
 
           <p className="hero-subtitle">
             Analyze environmental noise, detect violations, assess governance
-            risks, and support evidence-based decision making.
+            risks, and support evidence based decision making.
           </p>
 
           <div className="hero-actions">
@@ -175,7 +175,10 @@ function LandingPage() {
                   <span className="phone-stat">12</span>
                   <span className="phone-label">Reports saved</span>
                   <div className="phone-mini-bar">
-                    <div className="phone-mini-bar-fill" style={{ width: "72%" }} />
+                    <div
+                      className="phone-mini-bar-fill"
+                      style={{ width: "72%" }}
+                    />
                   </div>
                 </div>
               </div>
@@ -197,7 +200,10 @@ function LandingPage() {
                   <span className="phone-stat">68%</span>
                   <span className="phone-label">Across all venues</span>
                   <div className="phone-mini-bar">
-                    <div className="phone-mini-bar-fill" style={{ width: "68%" }} />
+                    <div
+                      className="phone-mini-bar-fill"
+                      style={{ width: "68%" }}
+                    />
                   </div>
                 </div>
               </div>
@@ -224,8 +230,9 @@ function LandingPage() {
               <div className="feature-large">
                 <h2>Noise analysis</h2>
                 <p>
-                  Upload audio recordings and automatically estimate noise levels
-                  using AI-powered acoustic processing and source classification.
+                  Upload audio recordings and automatically estimate noise
+                  levels using ML powered acoustic processing and source
+                  classification.
                 </p>
               </div>
               <div className="feature-small">
@@ -263,7 +270,7 @@ function LandingPage() {
               </div>
               <div className="step-card">
                 <h3>2</h3>
-                <p>AI classification</p>
+                <p>ML classification</p>
               </div>
               <div className="step-card">
                 <h3>3</h3>

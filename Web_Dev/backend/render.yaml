@@ -2,5 +2,23 @@ services:
   - type: web
     name: noisegov-api
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+
+    # Build command - installs production dependencies
+    buildCommand: pip install -r Web_Dev/backend/requirements-prod.txt
+
+    # Start command - runs API from correct directory
+    startCommand: cd Web_Dev/backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
+    # Runtime
+    runtime: python-3.11
+
+    # Environment variables (must be set in Render dashboard)
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: API_HOST
+        value: 0.0.0.0
+      # Set these in Render dashboard:
+      # DATABASE_URL=postgresql://user:pass@host:5432/noisegov
+      # CORS_ORIGINS=https://your-frontend-domain.com

@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# Node modules (will be installed in Docker)
+node_modules
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Development
+.env
+.env.local
+.env.*.local
+
+# Documentation
+*.md
+docs/
+
+# Build artifacts (will be rebuilt in Docker)
+dist
+
+# Testing
+coverage

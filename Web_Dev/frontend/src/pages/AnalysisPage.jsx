@@ -4,6 +4,7 @@ import { analyzeNoise } from "../services/api";
 import FileDropzone from "../components/FileDropzone";
 
 const VENUE_OPTIONS = [
+  "Select venue type",
   "Residential Zone",
   "Commercial Zone",
   "Industrial Zone",
@@ -16,7 +17,7 @@ const VENUE_OPTIONS = [
 function AnalysisPage() {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
-  const [venueType, setVenueType] = useState("Residential Zone");
+  const [venueType, setVenueType] = useState("Select venue type");
   const [recordingTime, setRecordingTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -25,6 +26,8 @@ function AnalysisPage() {
     const next = {};
     if (!file) next.file = "Please upload a WAV audio file.";
     if (!recordingTime) next.recordingTime = "Please select a recording time.";
+    if (venueType === "Select venue type")
+      next.venueType = "Please select a venue type.";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -55,7 +58,7 @@ function AnalysisPage() {
       <header className="page-header">
         <h1>Analyze noise</h1>
         <p>
-          Upload a WAV recording, set the venue and time, and get AI-powered
+          Upload a WAV recording, set the venue and time, and get ML powered
           classification with compliance and governance insights.
         </p>
       </header>

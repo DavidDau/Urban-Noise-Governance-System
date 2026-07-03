@@ -41,13 +41,10 @@ function FileDropzone({ file, onFileChange, accept = ".wav" }) {
         className="dropzone-input"
         onChange={(e) => handleFiles(e.target.files)}
       />
-      <div className="dropzone-icon" aria-hidden="true">
-        🎙️
-      </div>
       <p className="dropzone-title">
-        {file ? "File ready" : "Drop your audio file here"}
+        {file ? "File ready" : "Drop your audio file here or click to browse"}
       </p>
-      <p className="dropzone-hint">WAV format · or click to browse</p>
+      <p className="dropzone-hint">WAV format</p>
       {file && <p className="dropzone-file">{file.name}</p>}
     </div>
   );

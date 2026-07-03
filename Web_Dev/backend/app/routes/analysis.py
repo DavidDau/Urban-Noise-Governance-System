@@ -6,14 +6,13 @@ from fastapi import APIRouter, UploadFile, File, Form
 from app.services.pdf_service import generate_pdf
 from app.database import SessionLocal
 from app.models.report import AnalysisReport
-
 from app.schemas.venue import VenueType
-
 from app.services.ml_service import predict_source
 from app.services.noise_service import estimate_db, get_time_period
 from app.services.severity_service import get_severity
-from app.services.compliance_service import ( check_compliance, get_recommendation)
+from app.services.compliance_service import (check_compliance, get_recommendation)
 from app.services.risk_service import (calculate_risk_score)
+from app.config import REPORTS_DIR
 
 router = APIRouter()
 
@@ -91,16 +90,10 @@ async def analyze_audio(
         db_session.refresh(report)
         db_session.close()
 
-        # Generating the pdf report        
-        os.makedirs("reports", exist_ok=True)
+        # Generate PDF report
+        pdf_path = REPORTS_DIR / f"report_{report.id}.pdf"
 
-        pdf_path = (
-            f"reports/report_{report.id}.pdf"
-        )
-
-        generate_pdf(
-            report, pdf_path
-        )
+        generate_pdf(report, str(pdf_path))
 
         # API response
         return {

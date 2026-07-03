@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: noisegov-db
+    environment:
+      POSTGRES_USER: noisegov_user
+      POSTGRES_PASSWORD: noisegov_password
+      POSTGRES_DB: noisegov
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U noisegov_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - noisegov-net
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./Web_Dev/backend
+      dockerfile: Dockerfile
+    container_name: noisegov-api
+    ports:
+      - "8000:8000"
+    environment:
+      ENVIRONMENT: development
+      DATABASE_URL: postgresql://noisegov_user:noisegov_password@db:5432/noisegov
+      CORS_ORIGINS: http://localhost:5173,http://localhost:3000,http://frontend:3000
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      TF_CPP_MIN_LOG_LEVEL: 2
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./Web_Dev/backend/reports:/app/reports
+      - ./Web_Dev/backend/ml_models:/app/ml_models:ro
+    networks:
+      - noisegov-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./Web_Dev/frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://backend:8000
+    container_name: noisegov-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - noisegov-net
+    environment:
+      VITE_API_URL: http://backend:8000
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  noisegov-net:
+    driver: bridge
+
+# Usage:
+# Build:  docker-compose build
+# Start:  docker-compose up -d
+# Logs:   docker-compose logs -f
+# Stop:   docker-compose down
+# Clean:  docker-compose down -v
+
+# Access:
+# Frontend: http://localhost:3000
+# API:      http://localhost:8000
+# Docs:     http://localhost:8000/docs
+# Database: localhost:5432

@@ -3,7 +3,7 @@
 
 :root {
   /* LIGHT THEME — softened paper tone */
-  --background: #adaaaa;
+  --background: #d5d5d5;
   --card: #faf8f4;
   --surface-muted: #f5f2ed;
   --primary: #ff6a00;
@@ -11,11 +11,11 @@
   --lavender: #efedf4;
 
   --text: #292524;
-  --muted: #78716c;
+  --muted: #848484;
 
   --border: #e7e5e4;
 
-  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  --shadow-soft: 0 4px 20px -2px rgba(1, 0, 0, 0.5);
   --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
 
   --radius-sm: 16px;

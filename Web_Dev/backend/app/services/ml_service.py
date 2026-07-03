@@ -10,11 +10,7 @@ from tensorflow.keras.models import load_model
 # Silence TensorFlow logs
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
-BASE_DIR = Path(__file__).resolve().parents[2]
-MODEL_DIR = BASE_DIR / "ml_models"
-
-MODEL_PATH = MODEL_DIR / "urban_noise_cnn.keras"
-ENCODER_PATH = MODEL_DIR / "label_encoder.pkl"
+from app.config import MODEL_PATH, ENCODER_PATH
 
 if not MODEL_PATH.exists():
     raise FileNotFoundError(f"Model not found: {MODEL_PATH}")
@@ -58,6 +54,17 @@ def preprocess_audio(path: str):
 
 
 def predict_source(audio_path: str):
+    """
+    Predict noise source from audio file.
+    
+    Args:
+        audio_path (str): Path to audio file
+        
+    Returns:
+        tuple:
+            label (str): Capitalized label for governance compliance
+            confidence (float): Model confidence score (0-1)
+    """
     features = preprocess_audio(audio_path)
 
     predictions = MODEL.predict(
@@ -76,5 +83,19 @@ def predict_source(audio_path: str):
     label = ENCODER.inverse_transform(
         [predicted_index]
     )[0]
+
+    # Capitalize label for compliance service mapping
+    # Handle both lowercase and mixed case inputs
+    label_normalized = label.strip().lower()
+    capitalization_map = {
+        "traffic": "Traffic",
+        "construction": "Construction",
+        "entertainment": "Entertainment",
+        "worship": "Worship",
+        "ambience": "Ambience",
+        "normal_ambience": "Ambience"
+    }
+    
+    label = capitalization_map.get(label_normalized, label.capitalize())
 
     return label, confidence

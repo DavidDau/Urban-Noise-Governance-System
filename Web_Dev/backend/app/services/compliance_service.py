@@ -33,7 +33,7 @@ def get_recommendation(source: str, status: str):
         "Construction": "Verify compliance with permitted construction hours.",
         "Entertainment": "Enforce venue noise control policies.",
         "Worship": "Review amplification and community impact.",
-        "Ambience": "Investigate abnormal ambient noise levels."
+        "Ambience": "Investigate abnormal ambient noise levels.",
     }
 
     return mapping.get(source, "Conduct further noise assessment.")
