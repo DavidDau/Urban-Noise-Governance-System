@@ -1,10 +1,10 @@
-from pathlib import Path
 import os
+import time
+from pathlib import Path
 
-import numpy as np
-import librosa
 import joblib
-
+import librosa
+import numpy as np
 from tensorflow.keras.models import load_model
 
 # Silence TensorFlow logs
@@ -12,18 +12,45 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 from app.config import MODEL_PATH, ENCODER_PATH
 
+# ------------------------------------------------------------------
+# Validate model files
+# ------------------------------------------------------------------
+
 if not MODEL_PATH.exists():
     raise FileNotFoundError(f"Model not found: {MODEL_PATH}")
 
 if not ENCODER_PATH.exists():
     raise FileNotFoundError(f"Encoder not found: {ENCODER_PATH}")
 
+print("Loading CNN model...")
+load_start = time.perf_counter()
 MODEL = load_model(MODEL_PATH)
-ENCODER = joblib.load(ENCODER_PATH)
+print(f"CNN model loaded in {time.perf_counter() - load_start:.2f}s")
 
+print("Loading label encoder...")
+encoder_start = time.perf_counter()
+ENCODER = joblib.load(ENCODER_PATH)
+print(f"Label encoder loaded in {time.perf_counter() - encoder_start:.2f}s")
+
+
+# ------------------------------------------------------------------
+# Audio preprocessing
+# ------------------------------------------------------------------
 
 def preprocess_audio(path: str):
-    audio, sr = librosa.load(path, sr=22050)
+
+    start = time.perf_counter()
+
+    # Load only the first 4 seconds to speed up inference
+    audio, sr = librosa.load(
+        path,
+        sr=22050,
+        duration=4
+    )
+
+    print(f"      Audio loaded: {time.perf_counter() - start:.2f}s")
+
+    mel_start = time.perf_counter()
 
     mel = librosa.feature.melspectrogram(
         y=audio,
@@ -35,6 +62,10 @@ def preprocess_audio(path: str):
         mel,
         ref=np.max
     )
+
+    print(f"      Mel spectrogram: {time.perf_counter() - mel_start:.2f}s")
+
+    resize_start = time.perf_counter()
 
     if mel_db.shape[1] < 128:
         pad = 128 - mel_db.shape[1]
@@ -50,43 +81,42 @@ def preprocess_audio(path: str):
         axis=(0, -1)
     )
 
+    print(f"      Resize/expand: {time.perf_counter() - resize_start:.2f}s")
+    print(f"      Total preprocessing: {time.perf_counter() - start:.2f}s")
+
     return mel_db
 
 
+# ------------------------------------------------------------------
+# Prediction
+# ------------------------------------------------------------------
+
 def predict_source(audio_path: str):
-    """
-    Predict noise source from audio file.
-    
-    Args:
-        audio_path (str): Path to audio file
-        
-    Returns:
-        tuple:
-            label (str): Capitalized label for governance compliance
-            confidence (float): Model confidence score (0-1)
-    """
+
+    total_start = time.perf_counter()
+
     features = preprocess_audio(audio_path)
+
+    predict_start = time.perf_counter()
 
     predictions = MODEL.predict(
         features,
         verbose=0
     )
 
-    predicted_index = int(
-        np.argmax(predictions)
-    )
+    print(f"      MODEL.predict(): {time.perf_counter() - predict_start:.2f}s")
 
-    confidence = float(
-        np.max(predictions)
-    )
+    decode_start = time.perf_counter()
+
+    predicted_index = int(np.argmax(predictions))
+    confidence = float(np.max(predictions))
 
     label = ENCODER.inverse_transform(
         [predicted_index]
     )[0]
 
-    # Capitalize label for compliance service mapping
-    # Handle both lowercase and mixed case inputs
     label_normalized = label.strip().lower()
+
     capitalization_map = {
         "traffic": "Traffic",
         "construction": "Construction",
@@ -95,7 +125,13 @@ def predict_source(audio_path: str):
         "ambience": "Ambience",
         "normal_ambience": "Ambience"
     }
-    
-    label = capitalization_map.get(label_normalized, label.capitalize())
+
+    label = capitalization_map.get(
+        label_normalized,
+        label.capitalize()
+    )
+
+    print(f"      Label decoding: {time.perf_counter() - decode_start:.2f}s")
+    print(f"      Total ML prediction: {time.perf_counter() - total_start:.2f}s")
 
     return label, confidence
