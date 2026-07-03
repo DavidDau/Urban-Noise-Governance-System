@@ -50,6 +50,7 @@ We've transformed the **Urban Noise Governance System** from a demo application 
 - The backend production dependency set now includes `psycopg2-binary` so SQLAlchemy can connect to PostgreSQL.
 - `app/config.py` now resolves model and report paths from environment variables so container mounts work correctly.
 - The backend path bug was fixed by correcting the base directory used for default model resolution.
+- `app/database.py` now reads `DATABASE_URL` from `app/config.py` instead of a hardcoded SQLite string.
 - The backend health endpoint now returns `{"status": "healthy"}`.
 - The API root endpoint now returns the running service status and version.
 

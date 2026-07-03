@@ -8,7 +8,7 @@ DEBUG = ENV == "development"
 # Database
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://noisegov_user:noisegov_password@localhost:5432/noisegov"
+    "postgresql://noisegov_user:lcRlcuWIOAYVaqJPS2LwUCa5ZiA5O5rE@dpg-d93l9lcvikkc73ahe4sg-a/noisegov"
 )
 
 # API
