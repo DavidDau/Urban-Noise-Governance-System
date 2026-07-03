@@ -46,8 +46,22 @@ function AnalysisPage() {
       setErrors({});
       const result = await analyzeNoise(formData);
       navigate("/results", { state: result });
-    } catch {
-      setErrors({ form: "Analysis failed. Check your file and try again." });
+    } catch (err) {
+      console.error(err);
+
+      if (err.response) {
+        console.log("Status:", err.response.status);
+        console.log("Data:", err.response.data);
+      } else if (err.request) {
+        console.log("No response received");
+        console.log(err.request);
+      } else {
+        console.log(err.message);
+      }
+
+      setErrors({
+        form: err.response?.data?.detail || err.message,
+      });
     } finally {
       setLoading(false);
     }
