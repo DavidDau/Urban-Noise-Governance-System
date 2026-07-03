@@ -1,5 +1,6 @@
 import os
 import tempfile
+import time
 
 from fastapi import APIRouter, UploadFile, File, Form
 
@@ -10,8 +11,11 @@ from app.schemas.venue import VenueType
 from app.services.ml_service import predict_source
 from app.services.noise_service import estimate_db, get_time_period
 from app.services.severity_service import get_severity
-from app.services.compliance_service import (check_compliance, get_recommendation)
-from app.services.risk_service import (calculate_risk_score)
+from app.services.compliance_service import (
+    check_compliance,
+    get_recommendation
+)
+from app.services.risk_service import calculate_risk_score
 from app.config import REPORTS_DIR
 
 router = APIRouter()
@@ -23,6 +27,9 @@ async def analyze_audio(
     venue_type: VenueType = Form(...),
     recording_time: str = Form(...)
 ):
+
+    start = time.perf_counter()
+    print("\n========== NEW ANALYSIS REQUEST ==========")
 
     temp_path = None
 
@@ -37,11 +44,17 @@ async def analyze_audio(
             tmp.write(await file.read())
             temp_path = tmp.name
 
+        print(f"1. File saved: {time.perf_counter() - start:.2f}s")
+
         # ML prediction
         source, confidence = predict_source(temp_path)
 
+        print(f"2. ML prediction complete: {time.perf_counter() - start:.2f}s")
+
         # Noise analysis
         estimated_db = estimate_db(temp_path)
+
+        print(f"3. dB estimation complete: {time.perf_counter() - start:.2f}s")
 
         severity = get_severity(
             estimated_db
@@ -63,9 +76,11 @@ async def analyze_audio(
         )
 
         risk = calculate_risk_score(
-        severity,
-        compliance["status"]
+            severity,
+            compliance["status"]
         )
+
+        print(f"4. Governance analysis complete: {time.perf_counter() - start:.2f}s")
 
         # Save to database
         db_session = SessionLocal()
@@ -90,10 +105,15 @@ async def analyze_audio(
         db_session.refresh(report)
         db_session.close()
 
+        print(f"5. Database saved: {time.perf_counter() - start:.2f}s")
+
         # Generate PDF report
         pdf_path = REPORTS_DIR / f"report_{report.id}.pdf"
 
         generate_pdf(report, str(pdf_path))
+
+        print(f"6. PDF generated: {time.perf_counter() - start:.2f}s")
+        print(f"========== TOTAL TIME: {time.perf_counter() - start:.2f}s ==========\n")
 
         # API response
         return {
@@ -112,7 +132,10 @@ async def analyze_audio(
             "risk_level": risk["level"]
         }
 
-    finally:
+    except Exception as e:
+        print(f"\nERROR during analysis: {e}")
+        raise
 
+    finally:
         if temp_path and os.path.exists(temp_path):
             os.remove(temp_path)
