@@ -1,121 +1,158 @@
-# Machine Learning-Based Context-Aware Urban Acoustic Event Classification for Smart Noise Governance
+# Urban Noise Governance System
 
-Urban Noise Governance System
+> **Machine Learning-Based Context-Aware Urban Acoustic Event Classification for Smart Noise Governance**
 
-GitHub Repository: [https://github.com/DavidDau/Urban-Noise-Governance-System](https://github.com/DavidDau/Urban-Noise-Governance-System)
-Video Demo: (https://youtu.be/OJ99LWV6-TQ)
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)
+![React](https://img.shields.io/badge/React-Frontend-61DAFB)
+![Vite](https://img.shields.io/badge/Vite-Build-646CFF)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-CNN-FF6F00)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791)
+![License](https://img.shields.io/badge/License-Academic-green)
 
----
+## Project Overview
 
-## Overview
+The **Urban Noise Governance System** is a full-stack machine learning application developed as a Bachelor of Science in Machine Learning Capstone Project at the African Leadership University (ALU).
 
-This capstone project applies machine learning to urban acoustic event classification to support smarter noise governance.
+The system applies deep learning and environmental noise analysis to classify urban acoustic events, estimate sound pressure levels, evaluate compliance with Rwanda's environmental noise regulations, compute governance risk scores, and generate comprehensive PDF reports.
 
-Traditional noise monitoring systems focus mainly on sound intensity (decibels), which is useful for detecting noise levels but insufficient for identifying noise sources. This limits the ability of city planners and authorities to take targeted action.
-
-This system addresses that gap by classifying environmental sounds into meaningful urban categories such as traffic, construction, entertainment, and ambience. By combining audio signal processing with deep learning, the system provides contextual insights that support better decision-making in urban noise management.
-
----
-
-## Problem Statement
-
-Urban noise pollution is a growing environmental and public health issue, especially in rapidly developing cities.
-
-Current noise monitoring approaches rely on:
-
-- Decibel measurements
-- Manual inspections
-- Public complaints
-
-While these methods can detect excessive noise levels, they cannot automatically identify the source of the noise. This makes it difficult for stakeholders such as urban planners, businesses, and regulators to apply effective mitigation strategies.
-
-This project aims to solve this limitation by building a machine learning system capable of identifying urban sound sources from audio recordings.
+Unlike traditional noise monitoring systems that rely solely on sound intensity measurements, this project combines **context-aware sound classification** with regulatory compliance analysis to support informed decision-making for urban planners, regulators, businesses, and environmental authorities.
 
 ---
 
-## Objectives
+# Live Demo
 
-### Main Objective
+### Web Application
 
-To develop a machine learning system that classifies urban acoustic events and provides contextual insights for improved noise governance.
+https://urban-noise-governance-system.onrender.com
 
-### Specific Objectives
+### Backend API
 
-- Prepare and process urban sound datasets for machine learning
-- Develop and compare multiple machine learning models for classification
-- Evaluate models using standard performance metrics
-- Deploy a working API for real-time audio classification
-- Demonstrate the feasibility of context-aware noise analysis in smart cities
+https://noisegov-api.onrender.com
+
+### GitHub Repository
+
+https://github.com/DavidDau/Urban-Noise-Governance-System
+
+### Demonstration Video
+
+https://drive.google.com/file/d/1tKlUI6ZHv2f32MKb6ltGrrvTpPrpj6lI/view?usp=sharing
 
 ---
 
-## Target Classes
+# Key Features
 
-The system classifies audio into four main categories:
+- Upload WAV audio recordings
+- Urban acoustic event classification using a CNN model
+- Sound pressure level (dB) estimation
+- Rwanda environmental noise compliance evaluation
+- Governance risk score computation
+- Automatic recommendation generation
+- PDF report generation
+- Dashboard with analysis statistics
+- Analysis history
+- PostgreSQL database integration
+- Responsive web interface
+- REST API with Swagger documentation
+
+---
+
+# Problem Statement
+
+Urban noise pollution continues to affect environmental quality and public health in rapidly growing cities.
+
+Conventional monitoring systems primarily measure sound intensity in decibels without identifying the underlying source of the noise. This limits the ability of authorities to determine appropriate mitigation measures and enforce regulations effectively.
+
+This project addresses that challenge by introducing machine learning-based urban sound classification combined with contextual governance analysis.
+
+---
+
+# Objectives
+
+## Main Objective
+
+Develop a context-aware machine learning system that classifies urban acoustic events and supports smart noise governance through automated compliance analysis.
+
+## Specific Objectives
+
+- Develop a CNN model for urban sound classification
+- Estimate environmental noise levels
+- Evaluate compliance with Rwanda noise regulations
+- Compute governance risk scores
+- Generate automated PDF reports
+- Store historical analyses
+- Deploy a production-ready web application
+
+---
+
+# System Workflow
+
+```
+User Uploads WAV Audio
+            │
+            ▼
+React Frontend
+            │
+            ▼
+FastAPI Backend
+            │
+            ▼
+CNN Noise Classification
+            │
+            ▼
+Sound Level Estimation
+            │
+            ▼
+Compliance Evaluation
+            │
+            ▼
+Governance Risk Assessment
+            │
+            ▼
+PDF Report Generation
+            │
+            ▼
+PostgreSQL Storage
+            │
+            ▼
+Results Dashboard
+```
+
+---
+
+# Machine Learning Pipeline
+
+The machine learning workflow consists of:
+
+1. Audio preprocessing
+2. Feature extraction
+3. Mel Spectrogram generation
+4. CNN inference
+5. Noise category prediction
+6. Decibel estimation
+7. Compliance analysis
+8. Governance risk computation
+9. Recommendation generation
+10. Report generation
+
+---
+
+# Target Noise Categories
+
+The CNN model classifies urban sounds into four governance-oriented categories:
 
 - Traffic
 - Construction
 - Entertainment
 - Ambience
 
-These categories are derived by grouping classes from the UrbanSound8K dataset into broader governance-focused labels.
+These categories were derived from the UrbanSound8K dataset to better support urban governance applications.
 
 ---
 
-## Dataset
+# Feature Extraction
 
-### Primary Dataset
-
-- UrbanSound8K
-
-This dataset is used for preprocessing, feature extraction, model training, and evaluation.
-
-### Future Datasets
-
-- ESC-50
-- SONYC Urban Sound Dataset
-- Local Kigali Audio Dataset
-
----
-
-## Technology Stack
-
-### Machine Learning
-
-Python, TensorFlow, Scikit-learn, Librosa, NumPy, Pandas
-
-### Visualization
-
-Matplotlib, Seaborn
-
-### API Development
-
-FastAPI, Swagger UI
-
-### Future Enhancements
-
-PostgreSQL, HTML, CSS, Bootstrap
-
----
-
-## Machine Learning Pipeline
-
-The system follows a structured ML workflow:
-
-- Audio preprocessing
-- Feature extraction
-- Dataset preparation
-- Baseline model development
-- CNN model training
-- Model evaluation and comparison
-- Inference pipeline design
-- API deployment
-
----
-
-## Feature Extraction
-
-The model uses multiple audio features, including:
+Audio features include:
 
 - Mel Spectrograms
 - MFCCs
@@ -126,816 +163,393 @@ The model uses multiple audio features, including:
 
 ---
 
-## Models Implemented
+# Technology Stack
 
-### Random Forest Classifier
+## Frontend
 
-Used as a baseline model for initial performance comparison.
+- React
+- Vite
+- Axios
+- CSS3
 
-### Convolutional Neural Network (CNN)
+## Backend
 
-Primary model used for final deployment, trained on Mel spectrograms.
+- FastAPI
+- Uvicorn
+- TensorFlow/Keras
+- Librosa
+- ReportLab
 
-### Support Vector Machine (SVM)
+## Machine Learning
 
-Evaluated during experimentation but not included in the final MVP.
+- TensorFlow
+- Scikit-learn
+- NumPy
+- Pandas
 
----
+## Database
 
-## Model Performance
-
-### Random Forest (Baseline)
-
-- Accuracy: 0.82
-- Precision: 0.81
-- Recall: 0.80
-- F1 Score: 0.80
-
-### CNN Model (Final)
-
-- Accuracy: 0.92
-- Precision: 0.92
-- Recall: 0.92
-- F1 Score: 0.92
-
-The CNN model achieved the best performance and was selected for deployment.
-
----
-
-## API Prototype
-
-A FastAPI-based inference service exposes the trained model for real-time predictions.
-
-### Endpoint
-
-POST /predict
-
-### Input
-
-Audio file in WAV format
-
-### Example Response
-
-```json
-{
-  "prediction": "Construction",
-  "confidence": 0.92
-}
-```
-
-Swagger documentation is available at:
-
-[http://localhost:8000/docs](http://localhost:8000/docs)
-
----
-
-## System Architecture
-
-User
-→ API Request
-→ FastAPI Backend
-→ CNN Model
-→ Prediction Response
-
----
-
-## Deployment Plan
-
-### MVP Phase
-
-- Local FastAPI deployment
-- Swagger UI testing
-- Model inference validation
-
-### Future Deployment
-
-- Web application interface
-- Database integration (PostgreSQL)
-- Cloud deployment (AWS / Azure / Render / Railway)
-
----
-
-## Project Structure
-
-```
-Urban-Noise-Governance-System/
-
-README.md
-
-ml/
-├── notebooks/
-├── preprocessing/
-├── saved_models/
-└── data/
-
-deployment/
-├── app.py
-└── models/
-
-docs/
-└── screenshots/
-```
-
----
-
-## Expected Outcomes
-
-This project demonstrates that machine learning can move urban noise analysis beyond simple decibel measurement toward contextual understanding of sound sources.
-
-The system enables:
-
-- Identification of urban sound sources
-- Context-aware noise classification
-- Improved urban planning decisions
-- Foundation for smart city noise governance systems
-
----
-
----
-
-## Installation & Local Development
-
-### Prerequisites
-
-- Python 3.11+
-- Node.js 18+
-- PostgreSQL 15+ (or Docker)
-- Git
-
-### Quick Start with Docker (Recommended)
-
-```bash
-# Clone repository
-git clone https://github.com/DavidDau/Urban-Noise-Governance-System.git
-cd Urban-Noise-Governance-System
-
-# Start full stack (PostgreSQL + Backend + Frontend)
-docker-compose up -d
-
-# Wait 30 seconds for services to initialize
-sleep 30
-
-# Test
-curl http://localhost:8000/health        # Should return {"status": "healthy"}
-curl http://localhost:3000               # Should load frontend
-
-# Visit http://localhost:3000 in browser
-```
-
-Stop with: `docker-compose down`
-
-### Manual Setup
-
-#### Backend Setup
-
-```bash
-# Navigate to backend
-cd Web_Dev/backend
-
-# Create virtual environment
-python -m venv .venv
-
-# Activate (Windows)
-.venv\Scripts\activate
-# Or (macOS/Linux)
-source .venv/bin/activate
-
-# Install dependencies
-pip install -r requirements-prod.txt
-
-# Create .env file
-cp .env.example .env
-
-# Edit .env and set PostgreSQL connection (or keep SQLite for dev)
-# DATABASE_URL=postgresql://user:password@localhost:5432/noisegov
-
-# Run API
-uvicorn app.main:app --reload
-```
-
-API available at:
-
-- **API:** http://localhost:8000
-- **Docs:** http://localhost:8000/docs
-- **Health:** http://localhost:8000/health
-
-#### Frontend Setup
-
-```bash
-# In another terminal
-cd Web_Dev/frontend
-
-# Install dependencies
-npm install
-
-# Create environment file
-echo "VITE_API_URL=http://localhost:8000" > .env.local
-
-# Run dev server
-npm run dev
-```
-
-Frontend available at: http://localhost:5173
-
----
-
-## API Reference
-
-### Health Check
-
-```bash
-curl http://localhost:8000/health
-# Response: {"status": "healthy"}
-```
-
-### Analyze Audio
-
-```bash
-curl -X POST "http://localhost:8000/analysis/predict" \
-  -F "file=@audio.wav" \
-  -F "venue_type=Residential Zone" \
-  -F "recording_time=14:30"
-```
-
-**Venue Types:**
-
-- Residential Zone
-- Commercial Zone
-- Industrial Zone
-- Quiet Zone
-- Special Quiet Zone
-- Soundproof Venue
-- Non-Soundproof Venue
-
-**Response:**
-
-```json
-{
-  "report_id": 1,
-  "source": "Traffic",
-  "confidence": 0.9234,
-  "estimated_db": 72.5,
-  "severity": "High",
-  "status": "Non-Compliant",
-  "recommendation": "Assess peak-hour congestion around Kigali CBD."
-}
-```
-
-### Get Dashboard Stats
-
-```bash
-curl http://localhost:8000/dashboard/
-```
-
-### Get Analysis History
-
-```bash
-curl http://localhost:8000/history/
-```
-
-### Download Report PDF
-
-```bash
-curl http://localhost:8000/report/download/1 -o report.pdf
-```
-
-**Full API documentation available at** `http://localhost:8000/docs`
-
----
+- PostgreSQL
 
 ## Deployment
 
-### Environment Configuration
-
-Create `.env` file in `Web_Dev/backend/`:
-
-```bash
-# Copy from template
-cp .env.example .env
-
-# Edit for your environment
-ENVIRONMENT=production
-DATABASE_URL=postgresql://user:password@host:5432/noisegov
-CORS_ORIGINS=https://your-frontend-domain.com
-API_HOST=0.0.0.0
-API_PORT=8000
-```
-
-### Option 1: GitHub + Render (Recommended)
-
-#### Backend on Render
-
-1. Push to GitHub
-2. Go to [render.com](https://render.com)
-3. Click "New +" → "Web Service"
-4. Connect your GitHub repository
-5. Configure:
-   - **Build Command:** `pip install -r Web_Dev/backend/requirements-prod.txt`
-   - **Start Command:** `cd Web_Dev/backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-   - **Runtime:** Python 3.11
-6. Set environment variables:
-   - `ENVIRONMENT=production`
-   - `DATABASE_URL=postgresql://user:pass@host:5432/noisegov`
-   - `CORS_ORIGINS=https://your-frontend-domain.com`
-7. Deploy
-
-API will be at: `https://noisegov-api.onrender.com` (or your chosen name)
-
-#### Frontend on GitHub Pages or Render
-
-**Option A: GitHub Pages (Free, static only)**
-
-```bash
-# Build frontend
-cd Web_Dev/frontend
-npm run build
-
-# Push dist/ to GitHub Pages
-# Set repository settings: Deploy from branch gh-pages
-# Site will be at: https://yourusername.github.io/Urban-Noise-Governance-System
-```
-
-**Option B: Render Static Site**
-
-1. Create Static Site on Render
-2. Connect GitHub
-3. **Build Command:** `cd Web_Dev/frontend && npm install && npm run build`
-4. **Publish Directory:** `Web_Dev/frontend/dist`
-5. Set environment: `VITE_API_URL=https://noisegov-api.onrender.com`
-6. Deploy
-
-### Option 2: Docker Compose (Local/Self-Hosted)
-
-```bash
-# Build and start all services
-docker-compose build
-docker-compose up -d
-
-# Services:
-# - Frontend: http://localhost:3000
-# - Backend: http://localhost:8000
-# - Database: PostgreSQL on port 5432
-```
-
-### Option 3: Manual Server Deployment
-
-```bash
-# SSH into server
-ssh user@your-server.com
-
-# Clone repository
-git clone https://github.com/DavidDau/Urban-Noise-Governance-System.git
-cd Urban-Noise-Governance-System
-
-# Setup backend
-cd Web_Dev/backend
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements-prod.txt
-cp .env.example .env
-# Edit .env with your settings
-
-# Run with process manager (example: PM2)
-npm install -g pm2
-pm2 start "uvicorn app.main:app --host 0.0.0.0 --port 8000" --name noisegov-api
-
-# Setup frontend
-cd ../frontend
-npm install
-npm run build
-
-# Serve with nginx (optional, or use separate static hosting)
-```
+- Render Web Service
+- Render Static Site
 
 ---
 
-## Database Setup
-
-### SQLite (Development)
-
-- Default, automatically created
-- Location: `Web_Dev/backend/noisegov.db`
-- Not recommended for production
-
-### PostgreSQL (Production)
-
-**Local PostgreSQL:**
-
-```bash
-# Install PostgreSQL or use Docker
-docker run --name postgres -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:15
-
-# Update .env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/noisegov
-
-# Restart backend
-```
-
-**Render PostgreSQL:**
-
-1. Create PostgreSQL database on Render
-2. Get connection string
-3. Set `DATABASE_URL` in Render environment variables
-
----
-
-## Troubleshooting
-
-### Port Already in Use
-
-```bash
-# Find process using port 8000
-lsof -i :8000
-
-# Kill process
-kill -9 <PID>
-```
-
-### CORS Error
-
-```
-Access-Control-Allow-Origin missing
-```
-
-**Solution:** Update `CORS_ORIGINS` in `.env` and restart backend
-
-### Model Not Found
-
-```
-FileNotFoundError: Model not found
-```
-
-**Solution:** Verify files exist:
-
-```bash
-ls Web_Dev/backend/ml_models/
-# Should contain: urban_noise_cnn.keras, label_encoder.pkl
-```
-
-### Database Connection Error
-
-```
-operational error (sqlite3.OperationalError)
-```
-
-**Solution:**
-
-```bash
-# Delete and recreate
-rm Web_Dev/backend/noisegov.db
-
-# Restart backend (auto-creates)
-```
-
-### Frontend Can't Reach Backend
-
-1. Check `VITE_API_URL` in `.env.local`
-2. Verify backend is running
-3. Check CORS configuration
-4. Verify firewall allows requests
-
----
-
-## Project Structure
+# Repository Structure
 
 ```
 Urban-Noise-Governance-System/
-├── README.md                    # This file
-├── docker-compose.yml           # Local development stack
-├── .gitignore
+
+backend/
 │
-├── ml/                          # Machine Learning pipeline
-│   ├── config/                  # Configuration constants
-│   │   ├── classes.py          # Audio classes (traffic, construction, etc.)
-│   │   ├── experiment.py       # ML experiment settings
-│   │   └── paths.py            # File paths
-│   ├── data/                    # Datasets
-│   │   ├── raw/                # UrbanSound8K dataset
-│   │   ├── processed/          # Processed audio files
-│   │   └── features/           # Extracted features
-│   ├── feature_engineering/     # Feature extraction
-│   │   ├── mfcc.py
-│   │   └── spectrogram.py
-│   ├── preprocessing/           # Audio preprocessing
-│   │   ├── audio_loader.py
-│   │   └── resampler.py
-│   ├── notebooks/               # Jupyter notebooks
-│   │   ├── 01_audio_pipeline.ipynb
-│   │   ├── 02_feature_extraction.ipynb
-│   │   ├── 03_dataset_creation.ipynb
-│   │   └── 04_baseline_models.ipynb
-│   └── saved_models/            # Trained models
-│       ├── urban_noise_cnn.keras
-│       └── label_encoder.pkl
+├── app/
+│   ├── main.py
+│   ├── config.py
+│   ├── routes/
+│   ├── services/
+│   ├── models/
+│   ├── schemas/
+│   └── utils/
 │
-├── Web_Dev/
-│   ├── backend/                 # FastAPI backend
-│   │   ├── app/
-│   │   │   ├── main.py         # FastAPI app
-│   │   │   ├── config.py       # Configuration management
-│   │   │   ├── database.py     # Database setup
-│   │   │   ├── models/         # Database models
-│   │   │   ├── routes/         # API endpoints
-│   │   │   ├── schemas/        # Pydantic schemas
-│   │   │   ├── services/       # Business logic
-│   │   │   └── utils/          # Utilities
-│   │   ├── ml_models/          # Model files (symlink to ml/saved_models)
-│   │   ├── requirements-prod.txt # Production dependencies (minimal)
-│   │   ├── .env.example         # Environment template
-│   │   ├── Dockerfile          # Backend container
-│   │   ├── .dockerignore
-│   │   └── render.yaml         # Render deployment config
-│   │
-│   └── frontend/                # React + Vite
-│       ├── src/
-│       │   ├── components/     # React components
-│       │   ├── pages/          # Page components
-│       │   ├── services/       # API service
-│       │   ├── context/        # React context
-│       │   └── styles/         # CSS
-│       ├── package.json
-│       ├── vite.config.js
-│       ├── Dockerfile          # Frontend container
-│       ├── nginx.conf          # Nginx SPA routing
-│       ├── .env.example        # Environment template
-│       └── .dockerignore
+├── ml_models/
+│   ├── urban_noise_cnn.keras
+│   └── label_encoder.pkl
 │
-└── docs/                        # Additional documentation
+└── requirements.txt
+
+frontend/
+│
+├── src/
+│   ├── pages/
+│   ├── components/
+│   ├── services/
+│   ├── context/
+│   └── styles/
+│
+└── package.json
 ```
 
 ---
 
-## Common Issues & Solutions
+# Installation Guide
 
-### Local Development Issues
-
-**"ModuleNotFoundError: No module named 'app'"**
+## Clone the Repository (Deployment branch)
 
 ```bash
-# Wrong:
-cd Web_Dev
-python app/main.py
+git clone https://github.com/DavidDau/Urban-Noise-Governance-System.git
+```
 
-# Right:
-cd Web_Dev/backend
+```
+cd Urban-Noise-Governance-System
+```
+
+---
+
+## Backend Setup
+
+Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+Activate it
+
+Windows
+
+```bash
+.venv\Scripts\activate
+```
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Configure environment variables
+
+```env
+DATABASE_URL=
+SECRET_KEY=
+ALGORITHM=
+ACCESS_TOKEN_EXPIRE_MINUTES=
+```
+
+Run the backend
+
+```bash
 uvicorn app.main:app --reload
 ```
 
-**"Cannot GET /" on frontend**
+Backend available at
 
-- Ensure frontend is running: `npm run dev`
-- Check that it's on http://localhost:5173
+```
+http://localhost:8000
+```
 
-**Database corrupted**
+Swagger Documentation
+
+```
+http://localhost:8000/docs
+```
+
+---
+
+## Frontend Setup
+
+Navigate to the frontend directory
 
 ```bash
-# Delete and recreate
-rm Web_Dev/backend/noisegov.db
-# Restart backend
+cd frontend
 ```
 
-### Deployment Issues
+Install dependencies
 
-**Render build fails**
-
-1. Check build logs in Render dashboard
-2. Verify `render.yaml` has correct paths
-3. Ensure Python version is 3.11+
-4. Verify all dependencies in `requirements-prod.txt` install correctly
-
-**502 Bad Gateway**
-
-1. Check Render logs
-2. Verify environment variables set correctly
-3. Verify model files exist
-4. Test locally first
-
-**CORS errors in production**
-
-1. Update `CORS_ORIGINS` environment variable
-2. Include both http and https versions of your domain
-3. Restart backend
-
-**"Model not found" errors**
-
-1. Verify `ml_models/` directory exists in deployment
-2. Verify file paths in `app/config.py` are correct
-3. Check file permissions
-
----
-
-## Configuration
-
-### Environment Variables
-
-**Backend (.env):**
-
-```
-ENVIRONMENT=production          # or development
-DATABASE_URL=postgresql://...   # or sqlite:///./noisegov.db
-CORS_ORIGINS=https://your-domain.com,https://www.your-domain.com
-API_HOST=0.0.0.0
-API_PORT=8000
-REPORTS_DIR=./reports
+```bash
+npm install
 ```
 
-**Frontend (.env.local or .env.production):**
+Configure environment variables
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Run the application
+
+```bash
+npm run dev
+```
+
+Frontend available at
 
 ```
-VITE_API_URL=http://localhost:8000    # or production API URL
+http://localhost:5173
 ```
 
 ---
 
-## API Endpoints Summary
+# Deployment
 
-| Method | Endpoint                | Description          |
-| ------ | ----------------------- | -------------------- |
-| GET    | `/`                     | API info             |
-| GET    | `/health`               | Health check         |
-| POST   | `/analysis/predict`     | Analyze audio file   |
-| GET    | `/dashboard/`           | Dashboard statistics |
-| GET    | `/history/`             | Analysis history     |
-| GET    | `/report/download/{id}` | Download PDF report  |
+## Frontend
 
----
+Hosted on Render Static Site
 
-## Model Information
+https://urban-noise-governance-system.onrender.com
 
-### Labels (Lowercase)
+## Backend
 
-- `traffic`
-- `construction`
-- `entertainment`
-- `worship`
-- `ambience`
+Hosted on Render Web Service
 
-### Performance
+https://noisegov-api.onrender.com
 
-- **Model:** CNN trained on Mel spectrograms
-- **Accuracy:** 92%
-- **Input:** WAV audio file, 22050 Hz sample rate
-- **Output:** Classification + confidence score
+## Database
 
-### Updating the Model
+PostgreSQL hosted on Render
 
-To use a new trained model:
+Deployment verification included:
 
-1. Train using Jupyter notebooks in `ml/notebooks/`
-2. Export model as `urban_noise_cnn.keras`
-3. Export label encoder as `label_encoder.pkl` (sklearn LabelEncoder)
-4. Replace files in `Web_Dev/backend/ml_models/`
-5. Restart API (model loads automatically)
+- Backend health endpoint
+- Frontend connectivity
+- API communication
+- Database connectivity
+- PDF generation
+- End-to-end prediction workflow
 
 ---
 
-## Testing
+# REST API
 
-### Manual Testing
-
-1. **Upload audio:**
-   - Navigate to http://localhost:5173
-   - Select WAV file
-   - Choose venue type and time
-   - Click "Analyze"
-
-2. **Test API directly:**
-
-   ```bash
-   curl -X POST "http://localhost:8000/analysis/predict" \
-     -F "file=@test.wav" \
-     -F "venue_type=Residential Zone" \
-     -F "recording_time=14:30"
-   ```
-
-3. **Check health:**
-   ```bash
-   curl http://localhost:8000/health
-   ```
-
----
-
-## Architecture
+## Health Check
 
 ```
-User Interface (React)
-         ↓
-    Frontend (Vite)
-         ↓
-   FastAPI Backend
-         ↓
-    ML Pipeline
-         ├─ Audio Loading
-         ├─ Feature Extraction
-         ├─ CNN Model
-         └─ Predictions
-         ↓
-    Analysis Services
-         ├─ Noise Analysis
-         ├─ Compliance Check
-         ├─ Risk Assessment
-         └─ Recommendations
-         ↓
-   Database (PostgreSQL)
-         ↓
-    PDF Reports
+GET /
 ```
 
----
+```
+GET /health
+```
 
-## Future Enhancements
+## Documentation
 
-- [ ] User authentication (JWT + PostgreSQL)
-- [ ] Advanced analytics and visualizations
-- [ ] Real-time monitoring dashboard
-- [ ] Mobile app (React Native)
-- [ ] AI-powered recommendations
-- [ ] Integration with IoT sensors
-- [ ] Government compliance reporting
-- [ ] Machine learning model improvements
+```
+GET /docs
+```
 
----
+## Noise Analysis
 
-## Security Considerations
+```
+POST /analysis/predict
+```
 
-### Current Status
+Input:
 
-- Basic input validation (Pydantic)
-- CORS configured
-- No authentication (add for production)
-- No rate limiting (add for production)
+- WAV audio
+- Venue
+- Time period
 
-### Production Checklist
+Output:
 
-- [ ] Add JWT authentication
-- [ ] Add rate limiting
-- [ ] Enable HTTPS (auto on cloud platforms)
-- [ ] Add request logging
-- [ ] Set up monitoring and alerts
-- [ ] Regular dependency updates
-- [ ] Database backups
+- Predicted class
+- Estimated dB
+- Compliance status
+- Governance risk score
+- Recommendations
+- Generated report
 
 ---
 
-## Performance Optimization
+# Testing Strategy
 
-### Inference Speed
+The application was tested using multiple testing strategies to validate functionality and deployment.
 
-- Audio loading: ~100ms
-- Feature extraction: ~200ms
-- Model inference: ~1-2 seconds
-- **Total: ~1.5-2.5 seconds per audio file**
+## Functional Testing
 
-### Scaling Recommendations
+Validated:
 
-- Use PostgreSQL for concurrent users
-- Add caching for repeated analyses
-- Consider GPU acceleration for inference
-- Implement job queue for batch processing (Celery + Redis)
+- Audio upload
+- File validation
+- CNN inference
+- dB estimation
+- Compliance evaluation
+- Risk score computation
+- PDF generation
+- Dashboard updates
+- History retrieval
+
+## Input Validation Testing
+
+Different data values were tested including:
+
+- Different urban sound recordings
+- Different venue selections
+- Different operational time periods
+- Invalid file handling
+
+## Integration Testing
+
+Verified interactions between:
+
+- React Frontend
+- FastAPI Backend
+- CNN Model
+- PostgreSQL Database
+- PDF Generation Service
+
+## Deployment Testing
+
+Verified after deployment on Render by confirming:
+
+- API accessibility
+- Frontend accessibility
+- Database connectivity
+- End-to-end analysis workflow
 
 ---
 
-## Support & Contributions
+# Performance Evaluation
 
-### Issues
+The deployed application was tested on multiple devices and browsers.
 
-Found a bug? [Open an issue on GitHub](https://github.com/DavidDau/Urban-Noise-Governance-System/issues)
+| Device     | Browser | Result |
+| ---------- | ------- | ------ |
+| Windows 11 | Chrome  | Passed |
+| Windows 11 | Edge    | Passed |
+| Android    | Chrome  | Passed |
+| iPhone     | Safari  | Passed |
 
-### Contributing
-
-Pull requests welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+The application demonstrated responsive performance and consistent functionality across tested environments.
 
 ---
 
-## Author
+# Testing Results
+
+The demonstration video includes successful execution of:
+
+- WAV file upload
+- Noise classification
+- Venue-based analysis
+- Time-aware compliance evaluation
+- Governance risk assessment
+- Dashboard statistics
+- Analysis history retrieval
+- PDF report generation
+
+---
+
+# Analysis of Results
+
+The developed system successfully achieved the primary objectives defined during the project proposal.
+
+The CNN model accurately classified urban acoustic events and enabled context-aware governance analysis beyond traditional decibel monitoring. Integration of sound classification with compliance evaluation and governance risk assessment demonstrated the practical application of machine learning in environmental management.
+
+Deployment of both the frontend and backend validated the feasibility of providing noise analysis as a web-based service. PostgreSQL integration enabled persistent storage of historical analyses, while automated PDF generation improved reporting capabilities.
+
+The system therefore extends conventional environmental noise monitoring by incorporating contextual information necessary for evidence-based governance and decision-making.
+
+---
+
+# Discussion
+
+The milestones achieved throughout the project demonstrate the successful integration of machine learning, software engineering, and environmental governance principles.
+
+Developing the CNN classification model established the core intelligent component of the application, while subsequent integration with FastAPI, PostgreSQL, and the React frontend transformed the research prototype into a deployable decision-support system.
+
+The deployed application provides stakeholders with automated noise analysis, regulatory compliance evaluation, and governance recommendations through an accessible web interface. This demonstrates how machine learning can contribute to smarter urban management and sustainable city planning.
+
+---
+
+# Recommendations and Future Work
+
+Future improvements include:
+
+- User authentication and role-based access control
+- Real-time environmental monitoring using IoT sensors
+- Mobile application development
+- Live audio streaming support
+- Expanded urban sound datasets
+- Improved CNN architectures for higher classification accuracy
+- GIS-based visualization of noise hotspots
+- Integration with national environmental monitoring systems
+- Multi-language reporting
+- Automated alert notifications for regulatory violations
+
+---
+
+# Visuals
+
+The following Visuals are demonstrated in the accompanying project video:
+
+- Landing Page
+- Dashboard
+- Analysis Page
+- Results Page
+- History Page
+
+---
+
+# Demonstration Video
+
+https://drive.google.com/file/d/1tKlUI6ZHv2f32MKb6ltGrrvTpPrpj6lI/view?usp=sharing
+
+---
+
+# Author
 
 **David Cyubahiro**
 
-- Bachelor of Science in Machine Learning
-- African Leadership University (ALU)
-- Capstone Project 2026
+Bachelor of Science in Machine Learning
+
+African Leadership University (ALU)
+
+Capstone Project 2026
 
 ---
 
-## License
+# License
 
-This project is part of an academic capstone. Please refer to LICENSE file for usage terms.
-
----
-
-## Acknowledgments
-
-- **Dataset:** UrbanSound8K
-- **Framework:** FastAPI, React, TensorFlow
-- **Deployment:** Render, GitHub
-- **Mentors & Advisors:** ALU Faculty
-
----
-
-**Last Updated:** July 3, 2026
-**Status:** ✅ Production Ready (with PostgreSQL + deployment configured)
+This project was developed for academic purposes as part of the Bachelor of Science in Machine Learning Capstone Project at the African Leadership University.
