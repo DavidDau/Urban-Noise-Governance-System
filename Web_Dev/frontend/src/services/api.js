@@ -1,27 +1,40 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
 export const analyzeNoise = async (formData) => {
-  const response = await axios.post(`${API_URL}/analysis/predict`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-
-  return response.data;
+  try {
+    // We omit manual headers; Axios handles multipart/form-data seamlessly
+    // when passed a real FormData object instance.
+    const response = await axios.post(`${API_URL}/analysis/predict`, formData);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "API Error in analyzeNoise:",
+      error.response?.data || error.message,
+    );
+    throw error;
+  }
 };
 
 export const getHistory = async () => {
-  const response = await axios.get(`${API_URL}/history`);
-
-  return response.data;
+  try {
+    const response = await axios.get(`${API_URL}/history`);
+    return response.data;
+  } catch (error) {
+    console.error("API Error in getHistory:", error.message);
+    throw error;
+  }
 };
 
 export const getDashboard = async () => {
-  const response = await axios.get(`${API_URL}/dashboard`);
-
-  return response.data;
+  try {
+    const response = await axios.get(`${API_URL}/dashboard`);
+    return response.data;
+  } catch (error) {
+    console.error("API Error in getDashboard:", error.message);
+    throw error;
+  }
 };
 
 export const downloadReport = (id) => {
