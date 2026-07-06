@@ -3,6 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { analyzeNoise } from "../services/api";
 import FileDropzone from "../components/FileDropzone";
 
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  console.log("Submit clicked");
+
+  if (!validate()) {
+    console.log("Validation failed");
+    return;
+  }
+
+  console.log("Validation passed");
+};
+
 const VENUE_OPTIONS = [
   "Select venue type",
   "Residential Zone",
