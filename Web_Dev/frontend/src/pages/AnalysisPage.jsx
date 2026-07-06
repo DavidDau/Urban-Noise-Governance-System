@@ -3,19 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { analyzeNoise } from "../services/api";
 import FileDropzone from "../components/FileDropzone";
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  console.log("Submit clicked");
-
-  if (!validate()) {
-    console.log("Validation failed");
-    return;
-  }
-
-  console.log("Validation passed");
-};
-
 const VENUE_OPTIONS = [
   "Select venue type",
   "Residential Zone",
@@ -29,6 +16,7 @@ const VENUE_OPTIONS = [
 
 function AnalysisPage() {
   const navigate = useNavigate();
+
   const [file, setFile] = useState(null);
   const [venueType, setVenueType] = useState("Select venue type");
   const [recordingTime, setRecordingTime] = useState("");
@@ -37,45 +25,83 @@ function AnalysisPage() {
 
   const validate = () => {
     const next = {};
+
+    console.log("----- VALIDATION -----");
+    console.log("File:", file);
+    console.log("Venue:", venueType);
+    console.log("Recording time:", recordingTime);
+
     if (!file) next.file = "Please upload a WAV audio file.";
+
     if (!recordingTime) next.recordingTime = "Please select a recording time.";
+
     if (venueType === "Select venue type")
       next.venueType = "Please select a venue type.";
+
+    console.log("Validation errors:", next);
+
     setErrors(next);
+
     return Object.keys(next).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+
+    console.log("========== SUBMIT CLICKED ==========");
+
+    if (!validate()) {
+      console.log("Validation failed.");
+      return;
+    }
+
+    console.log("Validation passed.");
 
     const formData = new FormData();
+
     formData.append("file", file);
     formData.append("venue_type", venueType);
     formData.append("recording_time", recordingTime);
 
+    console.log("FormData created.");
+
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
     try {
       setLoading(true);
       setErrors({});
+
+      console.log("Calling analyzeNoise()...");
+
       const result = await analyzeNoise(formData);
-      navigate("/results", { state: result });
+
+      console.log("API returned:");
+      console.log(result);
+
+      navigate("/results", {
+        state: result,
+      });
     } catch (err) {
+      console.error("Analysis failed:");
       console.error(err);
 
       if (err.response) {
-        console.log("Status:", err.response.status);
-        console.log("Data:", err.response.data);
+        console.log("Response status:", err.response.status);
+        console.log("Response data:", err.response.data);
       } else if (err.request) {
-        console.log("No response received");
+        console.log("Request sent but no response received.");
         console.log(err.request);
       } else {
-        console.log(err.message);
+        console.log("Axios error:", err.message);
       }
 
       setErrors({
-        form: err.response?.data?.detail || err.message,
+        form: err.response?.data?.detail || err.message || "Unknown error",
       });
     } finally {
+      console.log("Request finished.");
       setLoading(false);
     }
   };
@@ -84,50 +110,62 @@ function AnalysisPage() {
     <div className="page">
       <header className="page-header">
         <h1>Analyze noise</h1>
+
         <p>
-          Upload a WAV recording, set the venue and time, and get ML powered
+          Upload a WAV recording, set the venue and time, and get ML-powered
           classification with compliance and governance insights.
         </p>
       </header>
 
       <form className="form-card" onSubmit={handleSubmit} noValidate>
         <div className="form-group">
-          <label className="form-label" htmlFor="audio-file">
-            Audio file
-          </label>
-          <FileDropzone file={file} onFileChange={setFile} />
+          <label className="form-label">Audio file</label>
+
+          <FileDropzone
+            file={file}
+            onFileChange={(selectedFile) => {
+              console.log("Selected file:", selectedFile);
+              setFile(selectedFile);
+            }}
+          />
+
           {errors.file && <p className="form-error">{errors.file}</p>}
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="venue-type">
-            Venue type
-          </label>
+          <label className="form-label">Venue type</label>
+
           <select
-            id="venue-type"
             className="form-select"
             value={venueType}
-            onChange={(e) => setVenueType(e.target.value)}
+            onChange={(e) => {
+              console.log("Venue selected:", e.target.value);
+              setVenueType(e.target.value);
+            }}
           >
-            {VENUE_OPTIONS.map((v) => (
-              <option key={v} value={v}>
-                {v}
+            {VENUE_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
           </select>
+
+          {errors.venueType && <p className="form-error">{errors.venueType}</p>}
         </div>
 
         <div className="form-group">
-          <label className="form-label" htmlFor="recording-time">
-            Recording time
-          </label>
+          <label className="form-label">Recording time</label>
+
           <input
-            id="recording-time"
             type="time"
             className="form-input"
             value={recordingTime}
-            onChange={(e) => setRecordingTime(e.target.value)}
+            onChange={(e) => {
+              console.log("Recording time:", e.target.value);
+              setRecordingTime(e.target.value);
+            }}
           />
+
           {errors.recordingTime && (
             <p className="form-error">{errors.recordingTime}</p>
           )}
@@ -139,7 +177,7 @@ function AnalysisPage() {
           {loading ? (
             <span className="spinner-wrap">
               <span className="spinner" aria-hidden="true" />
-              Analyzing…
+              Analyzing...
             </span>
           ) : (
             "Run analysis"
