@@ -1,6 +1,7 @@
 import os
 import tempfile
 import time
+import logging
 
 from fastapi import APIRouter, UploadFile, File, Form
 
@@ -17,6 +18,9 @@ from app.services.compliance_service import (
 )
 from app.services.risk_service import calculate_risk_score
 from app.config import REPORTS_DIR
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
