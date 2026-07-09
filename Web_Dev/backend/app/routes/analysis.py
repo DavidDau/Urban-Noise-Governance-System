@@ -1,9 +1,10 @@
 import os
 import tempfile
+import traceback
 
 from fastapi import APIRouter, UploadFile, File, Form
 
-from app.services.noise_service import estimate_db
+from app.services.ml_service import predict_source
 
 router = APIRouter()
 
@@ -14,10 +15,10 @@ async def analyze_audio(
     venue_type: str = Form(...),
     recording_time: str = Form(...)
 ):
+
     temp_path = None
 
     try:
-        # Save uploaded file
         with tempfile.NamedTemporaryFile(
             delete=False,
             suffix=".wav"
@@ -26,29 +27,23 @@ async def analyze_audio(
             tmp.write(await file.read())
             temp_path = tmp.name
 
-        print("===================================")
-        print("STEP 1: File uploaded successfully")
-        print("Temp file:", temp_path)
+        print("STEP 1 - File saved")
 
-        # Test librosa/audio processing only
-        estimated_db = estimate_db(temp_path)
+        source, confidence = predict_source(temp_path)
 
-        print("STEP 2: estimate_db() completed")
-        print("Estimated dB:", estimated_db)
+        print("STEP 2 - Prediction completed")
 
         return {
             "success": True,
-            "filename": file.filename,
-            "venue": venue_type,
-            "recording_time": recording_time,
-            "estimated_db": estimated_db
+            "source": source,
+            "confidence": confidence
         }
 
     except Exception as e:
         print("===================================")
-        print("ERROR INSIDE analysis.py")
         print(type(e).__name__)
-        print(str(e))
+        print(e)
+        print(traceback.format_exc())
         raise
 
     finally:
