@@ -1,6 +1,5 @@
 import os
 import time
-from pathlib import Path
 
 import joblib
 import librosa
@@ -13,7 +12,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 from app.config import MODEL_PATH, ENCODER_PATH
 
 # ------------------------------------------------------------------
-# Validate model files
+# Load model once when the API starts
 # ------------------------------------------------------------------
 
 if not MODEL_PATH.exists():
@@ -23,68 +22,92 @@ if not ENCODER_PATH.exists():
     raise FileNotFoundError(f"Encoder not found: {ENCODER_PATH}")
 
 print("Loading CNN model...")
-load_start = time.perf_counter()
+start = time.perf_counter()
 MODEL = load_model(MODEL_PATH)
-print(f"CNN model loaded in {time.perf_counter() - load_start:.2f}s")
+print(f"CNN model loaded in {time.perf_counter() - start:.2f}s")
 
 print("Loading label encoder...")
-encoder_start = time.perf_counter()
+start = time.perf_counter()
 ENCODER = joblib.load(ENCODER_PATH)
-print(f"Label encoder loaded in {time.perf_counter() - encoder_start:.2f}s")
+print(f"Label encoder loaded in {time.perf_counter() - start:.2f}s")
 
 
 # ------------------------------------------------------------------
 # Audio preprocessing
 # ------------------------------------------------------------------
 
-def predict_source(audio_path: str):
+def preprocess_audio(audio_path: str):
 
-    print("ML STEP 1")
-    features = preprocess_audio(audio_path)
+    start = time.perf_counter()
+    print("Loading audio...")
 
-    print("ML STEP 2")
-    print(features.shape)
-    print(features.dtype)
-
-    print("ML STEP 3 - About to call MODEL.predict()")
-
-    predictions = MODEL.predict(
-        features,
-        verbose=0
+    # Load only first 4 seconds
+    audio, sr = librosa.load(
+        audio_path,
+        sr=22050,
+        duration=4
     )
 
-    print("ML STEP 4 - MODEL.predict() returned")
+    print(f"Audio loaded in {time.perf_counter() - start:.2f}s")
 
-    predicted_index = int(np.argmax(predictions))
-    confidence = float(np.max(predictions))
+    start = time.perf_counter()
 
-    print("ML STEP 5")
+    mel = librosa.feature.melspectrogram(
+        y=audio,
+        sr=sr,
+        n_mels=128
+    )
 
-    label = ENCODER.inverse_transform([predicted_index])[0]
+    mel_db = librosa.power_to_db(
+        mel,
+        ref=np.max
+    )
 
-    print("ML STEP 6")
+    print(f"Mel spectrogram in {time.perf_counter() - start:.2f}s")
 
-    return label, confidence
+    # Resize to 128x128
+    if mel_db.shape[1] < 128:
+        pad = 128 - mel_db.shape[1]
+        mel_db = np.pad(
+            mel_db,
+            ((0, 0), (0, pad))
+        )
+    else:
+        mel_db = mel_db[:, :128]
+
+    # Model expects (1,128,128,1)
+    mel_db = np.expand_dims(
+        mel_db,
+        axis=(0, -1)
+    ).astype(np.float32)
+
+    print("Feature shape:", mel_db.shape)
+
+    return mel_db
+
+
 # ------------------------------------------------------------------
 # Prediction
 # ------------------------------------------------------------------
 
 def predict_source(audio_path: str):
 
-    total_start = time.perf_counter()
+    total = time.perf_counter()
+
+    print("========== ML START ==========")
 
     features = preprocess_audio(audio_path)
 
-    predict_start = time.perf_counter()
+    print("Calling MODEL.predict()...")
+
+    start = time.perf_counter()
 
     predictions = MODEL.predict(
         features,
         verbose=0
     )
 
-    print(f"      MODEL.predict(): {time.perf_counter() - predict_start:.2f}s")
-
-    decode_start = time.perf_counter()
+    print(f"Prediction completed in {time.perf_counter() - start:.2f}s")
 
     predicted_index = int(np.argmax(predictions))
     confidence = float(np.max(predictions))
@@ -93,23 +116,23 @@ def predict_source(audio_path: str):
         [predicted_index]
     )[0]
 
-    label_normalized = label.strip().lower()
+    label = label.strip().lower()
 
-    capitalization_map = {
+    mapping = {
         "traffic": "Traffic",
         "construction": "Construction",
         "entertainment": "Entertainment",
         "worship": "Worship",
         "ambience": "Ambience",
-        "normal_ambience": "Ambience"
+        "normal_ambience": "Ambience",
     }
 
-    label = capitalization_map.get(
-        label_normalized,
+    label = mapping.get(
+        label,
         label.capitalize()
     )
 
-    print(f"      Label decoding: {time.perf_counter() - decode_start:.2f}s")
-    print(f"      Total ML prediction: {time.perf_counter() - total_start:.2f}s")
+    print(f"Total ML time: {time.perf_counter() - total:.2f}s")
+    print("========== ML END ==========")
 
     return label, confidence
