@@ -37,56 +37,34 @@ print(f"Label encoder loaded in {time.perf_counter() - encoder_start:.2f}s")
 # Audio preprocessing
 # ------------------------------------------------------------------
 
-def preprocess_audio(path: str):
+def predict_source(audio_path: str):
 
-    start = time.perf_counter()
+    print("ML STEP 1")
+    features = preprocess_audio(audio_path)
 
-    # Load only the first 4 seconds to speed up inference
-    audio, sr = librosa.load(
-        path,
-        sr=22050,
-        duration=4
+    print("ML STEP 2")
+    print(features.shape)
+    print(features.dtype)
+
+    print("ML STEP 3 - About to call MODEL.predict()")
+
+    predictions = MODEL.predict(
+        features,
+        verbose=0
     )
 
-    print(f"      Audio loaded: {time.perf_counter() - start:.2f}s")
+    print("ML STEP 4 - MODEL.predict() returned")
 
-    mel_start = time.perf_counter()
+    predicted_index = int(np.argmax(predictions))
+    confidence = float(np.max(predictions))
 
-    mel = librosa.feature.melspectrogram(
-        y=audio,
-        sr=sr,
-        n_mels=128
-    )
+    print("ML STEP 5")
 
-    mel_db = librosa.power_to_db(
-        mel,
-        ref=np.max
-    )
+    label = ENCODER.inverse_transform([predicted_index])[0]
 
-    print(f"      Mel spectrogram: {time.perf_counter() - mel_start:.2f}s")
+    print("ML STEP 6")
 
-    resize_start = time.perf_counter()
-
-    if mel_db.shape[1] < 128:
-        pad = 128 - mel_db.shape[1]
-        mel_db = np.pad(
-            mel_db,
-            ((0, 0), (0, pad))
-        )
-    else:
-        mel_db = mel_db[:, :128]
-
-    mel_db = np.expand_dims(
-        mel_db,
-        axis=(0, -1)
-    )
-
-    print(f"      Resize/expand: {time.perf_counter() - resize_start:.2f}s")
-    print(f"      Total preprocessing: {time.perf_counter() - start:.2f}s")
-
-    return mel_db
-
-
+    return label, confidence
 # ------------------------------------------------------------------
 # Prediction
 # ------------------------------------------------------------------
