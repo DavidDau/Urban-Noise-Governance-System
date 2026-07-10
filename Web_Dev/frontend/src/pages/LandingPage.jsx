@@ -95,8 +95,8 @@ function LandingPage() {
 
           <h1 className="hero-title">
             Smarter
-            <span className="script accent-word">governance</span>
-            for healthier cities
+            <span className="script accent-word">Noise</span>
+            governance for healthier cities
           </h1>
 
           <p className="hero-subtitle">
