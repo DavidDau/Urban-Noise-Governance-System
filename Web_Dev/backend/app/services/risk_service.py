@@ -2,18 +2,18 @@ def calculate_risk_score(
     severity: str,
     status: str
 ):
+    """
+    Calculates the environmental risk score and risk level.
+    """
 
     severity_scores = {
         "Low": 10,
         "Moderate": 30,
         "High": 60,
-        "Critical": 90
+        "Critical": 90,
     }
 
-    score = severity_scores.get(
-        severity,
-        0
-    )
+    score = severity_scores.get(severity, 0)
 
     if status == "Non-Compliant":
         score += 10
@@ -33,6 +33,6 @@ def calculate_risk_score(
         level = "Critical Risk"
 
     return {
-        "score": score,
-        "level": level
+        "risk_score": score,
+        "risk_level": level,
     }

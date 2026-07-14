@@ -1,4 +1,7 @@
-def get_severity(db: float):
+def get_severity(db: float) -> str:
+    """
+    Classifies the noise severity based on the estimated decibel level.
+    """
 
     if db < 50:
         return "Low"
