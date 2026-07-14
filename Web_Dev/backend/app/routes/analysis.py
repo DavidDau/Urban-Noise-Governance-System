@@ -3,8 +3,17 @@ import tempfile
 
 from fastapi import APIRouter, UploadFile, File, Form
 
-from app.services.noise_service import estimate_db
+from app.services.noise_service import (
+    estimate_db,
+    get_time_period,
+)
 from app.services.ml_service import predict_source
+from app.services.compliance_service import (
+    check_compliance,
+    get_recommendation,
+)
+from app.services.severity_service import get_severity
+from app.services.risk_service import calculate_risk_score
 
 router = APIRouter()
 
@@ -16,7 +25,6 @@ async def analyze_audio(
     recording_time: str = Form(...)
 ):
 
-    # Save uploaded audio temporarily
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
         tmp.write(await file.read())
         temp_path = tmp.name
@@ -26,17 +34,55 @@ async def analyze_audio(
         # Estimate noise level
         estimated_db = estimate_db(temp_path)
 
-        # Predict sound source using CNN
+        # Predict sound source
         source, confidence = predict_source(temp_path)
 
-        # Return prediction
+        # Determine time period
+        time_period = get_time_period(recording_time)
+
+        # Check compliance
+        compliance = check_compliance(
+            estimated_db,
+            venue_type,
+            time_period
+        )
+
+        # Determine severity
+        severity = get_severity(estimated_db)
+
+        # Calculate risk
+        risk = calculate_risk_score(
+            severity,
+            compliance["status"]
+        )
+
+        # Recommendation
+        recommendation = get_recommendation(
+            source,
+            compliance["status"]
+        )
+
         return {
             "success": True,
+
             "source": source,
             "confidence": round(confidence, 4),
+
             "estimated_db": round(estimated_db, 2),
+            "severity": severity,
+
             "venue_type": venue_type,
-            "recording_time": recording_time
+            "recording_time": recording_time,
+            "time_period": time_period,
+
+            "legal_limit": compliance["legal_limit"],
+            "status": compliance["status"],
+            "exceedance": compliance["exceedance"],
+
+            "risk_score": risk["risk_score"],
+            "risk_level": risk["risk_level"],
+
+            "recommendation": recommendation
         }
 
     finally:
