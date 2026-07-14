@@ -10,8 +10,7 @@ def estimate_db(path: str):
         path,
         sr=None,
         mono=True,
-        duration=10,
-        backend="soundfile"
+        duration=10
     )
 
     print("STEP 2 - audio loaded")
