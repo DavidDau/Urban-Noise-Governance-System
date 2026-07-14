@@ -26,10 +26,15 @@ async def analyze_audio(
 
         ml_debug = predict_source(temp_path)
 
+        source, confidence = predict_source(temp_path)
+
         return {
             "success": True,
             "estimated_db": estimated_db,
-            "ml_debug": ml_debug
+            "source": source,
+            "confidence": round(confidence, 4),
+            "venue_type": venue_type,
+            "recording_time": recording_time
         }
 
     finally:
