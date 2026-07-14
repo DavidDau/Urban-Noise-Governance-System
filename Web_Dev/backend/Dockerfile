@@ -1,50 +1,78 @@
-# Multi-stage build for efficient production image
+# ============================================================
+# Urban Noise Governance System
+# Production Dockerfile for Render
+# ============================================================
 
-# Build stage
-FROM python:3.11-slim as builder
-
-WORKDIR /build
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libsndfile1 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements
-COPY requirements-prod.txt .
-
-# Install Python dependencies
-RUN pip install --no-cache-dir --user -r requirements-prod.txt
-
-# Runtime stage
 FROM python:3.11-slim
+
+# ------------------------------------------------------------
+# Environment
+# ------------------------------------------------------------
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV TF_CPP_MIN_LOG_LEVEL=2
+
+# ------------------------------------------------------------
+# Working directory
+# ------------------------------------------------------------
 
 WORKDIR /app
 
-# Install runtime dependencies only
+# ------------------------------------------------------------
+# System dependencies
+# ------------------------------------------------------------
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    g++ \
+    ffmpeg \
     libsndfile1 \
+    libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Python packages from builder
-COPY --from=builder /root/.local /root/.local
+# ------------------------------------------------------------
+# Upgrade pip
+# ------------------------------------------------------------
 
-# Set PATH
-ENV PATH=/root/.local/bin:$PATH
+RUN pip install --upgrade pip
 
-# Copy application code
+# ------------------------------------------------------------
+# Install Python packages
+# ------------------------------------------------------------
+
+COPY requirements-prod.txt .
+
+RUN pip install --no-cache-dir -r requirements-prod.txt
+
+# ------------------------------------------------------------
+# Copy project
+# ------------------------------------------------------------
+
 COPY . .
 
-# Create reports directory
+# ------------------------------------------------------------
+# Reports directory
+# ------------------------------------------------------------
+
 RUN mkdir -p reports
 
+# ------------------------------------------------------------
+# Expose Render port
+# ------------------------------------------------------------
+
+EXPOSE 10000
+
+# ------------------------------------------------------------
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')"
+# ------------------------------------------------------------
 
-# Expose port
-EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
+CMD python -c "import requests; requests.get('http://127.0.0.1:10000/health')"
 
-# Run application
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# ------------------------------------------------------------
+# Start FastAPI
+# ------------------------------------------------------------
+
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000}"]
