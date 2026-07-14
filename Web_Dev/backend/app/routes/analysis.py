@@ -2,6 +2,7 @@ import tempfile
 import os
 
 from fastapi import APIRouter, UploadFile, File, Form
+from app.services.noise_service import estimate_db
 
 router = APIRouter()
 
@@ -15,9 +16,10 @@ async def analyze_audio(
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
         tmp.write(await file.read())
         path = tmp.name
+        db = estimate_db(path)
 
     os.remove(path)
 
     return {
-        "saved": True
+        "estimated_db": db
     }
