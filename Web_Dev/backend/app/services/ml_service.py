@@ -73,10 +73,21 @@ def predict_source(audio_path: str):
 
     features = preprocess_audio(audio_path)
 
-    return {
-        "shape": list(features.shape),
-        "dtype": str(features.dtype),
-        "minimum": float(np.min(features)),
-        "maximum": float(np.max(features)),
-        "mean": float(np.mean(features))
-    }
+    print("STEP 1")
+    print("Input shape:", features.shape)
+
+    print("STEP 2")
+    output = MODEL(features, training=False)
+
+    print("STEP 3")
+
+    predictions = output.numpy()
+
+    print("STEP 4")
+
+    predicted_index = int(np.argmax(predictions))
+    confidence = float(np.max(predictions))
+
+    label = ENCODER.inverse_transform([predicted_index])[0]
+
+    return label, confidence
