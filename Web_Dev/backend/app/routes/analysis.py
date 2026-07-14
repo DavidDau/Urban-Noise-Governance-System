@@ -1,10 +1,13 @@
-import tempfile
 import os
+import tempfile
 
 from fastapi import APIRouter, UploadFile, File, Form
+
 from app.services.noise_service import estimate_db
+from app.services.ml_service import predict_source
 
 router = APIRouter()
+
 
 @router.post("/predict")
 async def analyze_audio(
@@ -16,10 +19,18 @@ async def analyze_audio(
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
         tmp.write(await file.read())
         path = tmp.name
-        db = estimate_db(path)
 
-    os.remove(path)
+    try:
+        estimated_db = estimate_db(path)
 
-    return {
-        "estimated_db": db
-    }
+        source, confidence = predict_source(path)
+
+        return {
+            "estimated_db": estimated_db,
+            "source": source,
+            "confidence": confidence
+        }
+
+    finally:
+        if os.path.exists(path):
+            os.remove(path)
