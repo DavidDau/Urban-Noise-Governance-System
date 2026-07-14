@@ -18,19 +18,21 @@ async def analyze_audio(
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
         tmp.write(await file.read())
-        path = tmp.name
+        temp_path = tmp.name
 
     try:
-        estimated_db = estimate_db(path)
 
-        source, confidence = predict_source(path)
+        estimated_db = estimate_db(temp_path)
+
+        ml_debug = predict_source(temp_path)
 
         return {
+            "success": True,
             "estimated_db": estimated_db,
-            "source": source,
-            "confidence": confidence
+            "ml_debug": ml_debug
         }
 
     finally:
-        if os.path.exists(path):
-            os.remove(path)
+
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
