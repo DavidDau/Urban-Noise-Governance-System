@@ -1,10 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useTheme } from "../context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 
 function Navbar() {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme } = useTheme();
 
   const links = [
     { to: "/", text: "Home" },
@@ -18,7 +20,9 @@ function Navbar() {
       <nav className="navbar">
         <Link to="/" className="navbar-logo" onClick={() => setMenuOpen(false)}>
           <img
-            src={isDark ? "/UNGS_Logo_dark.svg" : "/UNGS_Logo_light.svg"}
+            src={
+              theme === "dark" ? "/UNGS_Logo_dark.svg" : "/UNGS_Logo_light.svg"
+            }
             alt="Urban Noise Governance System"
             className="navbar-logo-mark"
           />
