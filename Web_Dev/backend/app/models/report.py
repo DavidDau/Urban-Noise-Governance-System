@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime
 from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Float, Integer, String
 
 from app.database import Base
 
@@ -9,25 +10,27 @@ class AnalysisReport(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    source = Column(String)
-    confidence = Column(Float)
+    source = Column(String, nullable=False)
+    confidence = Column(Float, nullable=False)
 
-    estimated_db = Column(Float)
-    severity = Column(String)
+    estimated_db = Column(Float, nullable=False)
+    severity = Column(String, nullable=False)
 
-    venue_type = Column(String)
-    time_period = Column(String)
+    venue_type = Column(String, nullable=False)
+    recording_time = Column(String, nullable=False)
+    time_period = Column(String, nullable=False)
 
-    legal_limit = Column(Float)
-    status = Column(String)
-    exceedance = Column(Float)
+    legal_limit = Column(Float, nullable=False)
+    status = Column(String, nullable=False)
+    exceedance = Column(Float, nullable=False)
 
-    recommendation = Column(String)
+    recommendation = Column(String, nullable=False)
 
-    risk_score = Column(Integer)
-    risk_level = Column(String)
+    risk_score = Column(Integer, nullable=False)
+    risk_level = Column(String, nullable=False)
 
     created_at = Column(
         DateTime,
-        default=datetime.utcnow
+        default=datetime.utcnow,
+        nullable=False
     )

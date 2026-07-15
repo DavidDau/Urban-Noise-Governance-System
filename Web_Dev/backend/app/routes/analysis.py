@@ -1,17 +1,24 @@
 import os
 import tempfile
 
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, UploadFile, File, Form, Depends
+from sqlalchemy.orm import Session
+
+from app.dependencies import get_db
+from app.models.report import AnalysisReport
 
 from app.services.noise_service import (
     estimate_db,
     get_time_period,
 )
+
 from app.services.ml_service import predict_source
+
 from app.services.compliance_service import (
     check_compliance,
     get_recommendation,
 )
+
 from app.services.severity_service import get_severity
 from app.services.risk_service import calculate_risk_score
 
@@ -22,7 +29,8 @@ router = APIRouter()
 async def analyze_audio(
     file: UploadFile = File(...),
     venue_type: str = Form(...),
-    recording_time: str = Form(...)
+    recording_time: str = Form(...),
+    db: Session = Depends(get_db)
 ):
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
@@ -31,26 +39,24 @@ async def analyze_audio(
 
     try:
 
-        # Estimate noise level
+        # ML prediction
         estimated_db = estimate_db(temp_path)
-
-        # Predict sound source
         source, confidence = predict_source(temp_path)
 
-        # Determine time period
+        # Time period
         time_period = get_time_period(recording_time)
 
-        # Check compliance
+        # Compliance
         compliance = check_compliance(
             estimated_db,
             venue_type,
             time_period
         )
 
-        # Determine severity
+        # Severity
         severity = get_severity(estimated_db)
 
-        # Calculate risk
+        # Risk
         risk = calculate_risk_score(
             severity,
             compliance["status"]
@@ -62,8 +68,34 @@ async def analyze_audio(
             compliance["status"]
         )
 
+        # Save analysis to database
+        report = AnalysisReport(
+            source=source,
+            confidence=round(confidence, 4),
+
+            estimated_db=round(estimated_db, 2),
+            severity=severity,
+
+            venue_type=venue_type,
+            time_period=time_period,
+
+            legal_limit=compliance["legal_limit"],
+            status=compliance["status"],
+            exceedance=compliance["exceedance"],
+
+            recommendation=recommendation,
+
+            risk_score=risk["score"],
+            risk_level=risk["level"],
+        )
+
+        db.add(report)
+        db.commit()
+        db.refresh(report)
+
         return {
             "success": True,
+            "report_id": report.id,
 
             "source": source,
             "confidence": round(confidence, 4),
@@ -79,8 +111,8 @@ async def analyze_audio(
             "status": compliance["status"],
             "exceedance": compliance["exceedance"],
 
-            "risk_score": risk["risk_score"],
-            "risk_level": risk["risk_level"],
+            "risk_score": risk["score"],
+            "risk_level": risk["level"],
 
             "recommendation": recommendation
         }
