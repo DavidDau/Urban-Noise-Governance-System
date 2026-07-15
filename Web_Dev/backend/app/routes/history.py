@@ -1,22 +1,43 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from app.database import SessionLocal
+from app.dependencies import get_db
 from app.models.report import AnalysisReport
 
 router = APIRouter()
 
 
 @router.get("/")
-def get_history():
+def get_history(db: Session = Depends(get_db)):
 
-    db = SessionLocal()
+    reports = (
+        db.query(AnalysisReport)
+        .order_by(AnalysisReport.created_at.desc())
+        .all()
+    )
 
-    reports = db.query(
-        AnalysisReport
-    ).order_by(
-        AnalysisReport.id.desc()
-    ).all()
+    return [
+        {
+            "id": report.id,
+            "created_at": report.created_at,
 
-    db.close()
+            "source": report.source,
+            "confidence": report.confidence,
 
-    return reports
+            "estimated_db": report.estimated_db,
+            "severity": report.severity,
+
+            "venue_type": report.venue_type,
+            "time_period": report.time_period,
+
+            "legal_limit": report.legal_limit,
+            "status": report.status,
+            "exceedance": report.exceedance,
+
+            "risk_score": report.risk_score,
+            "risk_level": report.risk_level,
+
+            "recommendation": report.recommendation
+        }
+        for report in reports
+    ]
