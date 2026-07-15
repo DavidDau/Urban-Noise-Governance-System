@@ -1,335 +1,329 @@
-# Urban Noise Governance System
+# Urban Noise Governance System (UNGS)
 
-> **Machine Learning-Based Context-Aware Urban Acoustic Event Classification for Smart Noise Governance**
+A machine learning-powered web application for intelligent urban noise monitoring, acoustic event classification, environmental compliance assessment, and governance support.
 
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)
-![React](https://img.shields.io/badge/React-Frontend-61DAFB)
-![Vite](https://img.shields.io/badge/Vite-Build-646CFF)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-CNN-FF6F00)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791)
-![License](https://img.shields.io/badge/License-Academic-green)
-
-## Project Overview
-
-The **Urban Noise Governance System** is a full-stack machine learning application developed as a Bachelor of Science in Machine Learning Capstone Project at the African Leadership University (ALU).
-
-The system applies deep learning and environmental noise analysis to classify urban acoustic events, estimate sound pressure levels, evaluate compliance with Rwanda's environmental noise regulations, compute governance risk scores, and generate comprehensive PDF reports.
-
-Unlike traditional noise monitoring systems that rely solely on sound intensity measurements, this project will combine **context-aware sound classification** with regulatory compliance analysis to support informed decision-making for urban planners, regulators, businesses, and environmental authorities.
+Developed as a Bachelor's Degree Capstone Project in Machine Learning.
 
 ---
 
-# Live Demo
+# Project Overview
 
-### Web Application
+The Urban Noise Governance System (UNGS) enables environmental agencies and city authorities to:
 
-https://urban-noise-governance-system.onrender.com
+- Upload environmental audio recordings
+- Estimate environmental noise levels (dB)
+- Classify the dominant sound source using a Convolutional Neural Network (CNN)
+- Assess compliance against Rwanda Environmental Noise Regulations
+- Calculate environmental risk levels
+- Generate governance recommendations
+- Store every analysis in a PostgreSQL database
+- View historical analyses
+- Monitor statistics through an analytics dashboard
 
-### Backend API
-
-https://noisegov-api.onrender.com
-
-### GitHub Repository
-
-https://github.com/DavidDau/Urban-Noise-Governance-System
-
-### Demonstration Video
-
-https://drive.google.com/file/d/1tKlUI6ZHv2f32MKb6ltGrrvTpPrpj6lI/view?usp=sharing
+The system demonstrates how Artificial Intelligence can support evidence-based environmental governance.
 
 ---
 
-# Key Features
-
-- Upload WAV audio recordings
-- Urban acoustic event classification using a CNN model
-- Sound pressure level (dB) estimation
-- Rwanda environmental noise compliance evaluation
-- Governance risk score computation
-- Automatic recommendation generation
-- PDF report generation
-- Dashboard with analysis statistics
-- Analysis history
-- PostgreSQL database integration
-- Responsive web interface
-- REST API with Swagger documentation
-
----
-
-# Problem Statement
-
-Urban noise pollution continues to affect environmental quality and public health in rapidly growing cities.
-
-Conventional monitoring systems primarily measure sound intensity in decibels without identifying the underlying source of the noise. This limits the ability of authorities to determine appropriate mitigation measures and enforce regulations effectively.
-
-This project addresses that challenge by introducing machine learning-based urban sound classification combined with contextual governance analysis.
-
----
-
-# Objectives
-
-## Main Objective
-
-Develop a context-aware machine learning system that classifies urban acoustic events and supports smart noise governance through automated compliance analysis.
-
-## Specific Objectives
-
-- Develop a CNN model for urban sound classification
-- Estimate environmental noise levels
-- Evaluate compliance with Rwanda noise regulations
-- Compute governance risk scores
-- Generate automated PDF reports
-- Store historical analyses
-- Deploy a production-ready web application
-
----
-
-# System Workflow
+# System Architecture
 
 ```
-User Uploads WAV Audio
-            │
-            ▼
-React Frontend
-            │
-            ▼
+React + Vite Frontend
+        │
+        │ REST API
+        ▼
 FastAPI Backend
-            │
-            ▼
-CNN Noise Classification
-            │
-            ▼
-Sound Level Estimation
-            │
-            ▼
-Compliance Evaluation
-            │
-            ▼
-Governance Risk Assessment
-            │
-            ▼
-PDF Report Generation
-            │
-            ▼
-PostgreSQL Storage
-            │
-            ▼
-Results Dashboard
+        │
+ ├── CNN Sound Classification
+ ├── Noise Estimation
+ ├── Compliance Engine
+ ├── Severity Assessment
+ ├── Risk Assessment
+ ├── Recommendation Engine
+        │
+        ▼
+PostgreSQL Database
 ```
 
 ---
 
-# Machine Learning Pipeline
+# Machine Learning Model
 
-The machine learning workflow consists of:
+The acoustic event classifier was trained using TensorFlow/Keras.
 
-1. Audio preprocessing
-2. Feature extraction
-3. Mel Spectrogram generation
-4. CNN inference
-5. Noise category prediction
-6. Decibel estimation
-7. Compliance analysis
-8. Governance risk computation
-9. Recommendation generation
-10. Report generation
+Input:
 
----
+- WAV audio
+- Mel Spectrogram (128 × 128)
 
-# Target Noise Categories
-
-The CNN model classifies urban sounds into four governance-oriented categories:
+Output Classes:
 
 - Traffic
 - Construction
 - Entertainment
+- Worship
 - Ambience
 
-These categories were derived from the UrbanSound8K dataset to better support urban governance applications.
+The model predicts:
+
+- Sound source
+- Confidence score
 
 ---
 
-# Feature Extraction
+# Features
 
-Audio features include:
+## Audio Analysis
 
-- Mel Spectrograms
-- MFCCs
-- Chroma Features
-- Spectral Centroid
-- Spectral Rolloff
-- Zero Crossing Rate
+Users upload a WAV recording together with:
+
+- Venue Type
+- Recording Time
+
+The backend automatically performs:
+
+- Noise estimation (dB)
+- Sound classification
+- Time period detection (Day/Night)
+- Compliance assessment
+- Severity classification
+- Risk scoring
+- Recommendation generation
 
 ---
 
-# Technology Stack
+## Compliance Assessment
+
+The system compares estimated noise levels against predefined legal limits.
+
+Supported venue categories include:
+
+- Residential Zone
+- Commercial Zone
+- Industrial Zone
+- Quiet Zone
+- Special Quiet Zone
+- Soundproof Venue
+- Non-Soundproof Venue
+
+Outputs include:
+
+- Legal limit
+- Compliance status
+- Noise exceedance
+
+---
+
+## Risk Assessment
+
+Risk is determined using:
+
+- Noise severity
+- Compliance status
+
+Outputs:
+
+- Risk score
+- Risk level
+
+---
+
+## Recommendation Engine
+
+Recommendations are generated based on:
+
+- Predicted sound source
+- Compliance result
+
+Examples:
+
+Construction
+
+> Verify compliance with permitted construction hours and install temporary acoustic barriers.
+
+Traffic
+
+> Assess congestion mitigation and roadside noise barriers.
+
+Entertainment
+
+> Enforce venue noise control policies.
+
+---
+
+## Database Storage
+
+Every completed analysis is automatically stored.
+
+Each report contains:
+
+- Report ID
+- Source
+- Confidence
+- Estimated dB
+- Severity
+- Venue Type
+- Recording Time
+- Time Period
+- Legal Limit
+- Compliance Status
+- Exceedance
+- Risk Score
+- Risk Level
+- Recommendation
+- Created Date
+
+The backend uses PostgreSQL hosted on Render.
+
+---
+
+## History
+
+The History page retrieves every stored analysis from PostgreSQL.
+
+Users can review previous analyses without re-uploading recordings.
+
+---
+
+## Dashboard
+
+The Dashboard summarizes stored analyses, including:
+
+- Total analyses
+- Compliance distribution
+- Noise severity distribution
+- Sound source distribution
+- Average noise level
+
+These statistics are generated directly from the database.
+
+---
+
+# Tech Stack
 
 ## Frontend
 
 - React
 - Vite
+- React Router
 - Axios
-- CSS3
+- CSS
+
+---
 
 ## Backend
 
 - FastAPI
-- Uvicorn
-- TensorFlow/Keras
-- Librosa
-- ReportLab
-
-## Machine Learning
-
+- SQLAlchemy
 - TensorFlow
-- Scikit-learn
+- Librosa
 - NumPy
-- Pandas
+- Scikit-learn
+
+---
 
 ## Database
 
 - PostgreSQL
 
-## Deployment
-
-- Render Web Service
-- Render Static Site
+Hosted on Render.
 
 ---
 
-# Repository Structure
+# Project Structure
 
 ```
-Urban-Noise-Governance-System/
+frontend/
+    src/
+        components/
+        pages/
+        services/
+        context/
+        styles/
 
 backend/
-│
-├── app/
-│   ├── main.py
-│   ├── config.py
-│   ├── routes/
-│   ├── services/
-│   ├── models/
-│   ├── schemas/
-│   └── utils/
-│
-├── ml_models/
-│   ├── urban_noise_cnn.keras
-│   └── label_encoder.pkl
-│
-└── requirements.txt
+    app/
+        models/
+        routes/
+        services/
+        dependencies.py
+        database.py
+        config.py
+        main.py
 
-frontend/
-│
-├── src/
-│   ├── pages/
-│   ├── components/
-│   ├── services/
-│   ├── context/
-│   └── styles/
-│
-└── package.json
+model/
+    cnn_model.keras
+    label_encoder.pkl
 ```
 
 ---
 
-# Installation Guide
+# Backend Services
 
-## Clone the Repository (Deployment branch)
+## ML Service
 
-```bash
-git clone https://github.com/DavidDau/Urban-Noise-Governance-System.git
-```
+Responsible for:
 
-```
-cd Urban-Noise-Governance-System
-```
-
----
-
-## Backend Setup
-
-Create a virtual environment
-
-```bash
-python -m venv .venv
-```
-
-Activate it
-
-Windows
-
-```bash
-.venv\Scripts\activate
-```
-
-Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Configure environment variables
-
-```env
-DATABASE_URL=
-SECRET_KEY=
-ALGORITHM=
-ACCESS_TOKEN_EXPIRE_MINUTES=
-```
-
-Run the backend
-
-```bash
-uvicorn app.main:app --reload
-```
-
-Backend available at
-
-```
-http://localhost:8000
-```
-
-Swagger Documentation
-
-```
-http://localhost:8000/docs
-```
+- Audio preprocessing
+- Spectrogram generation
+- CNN inference
+- Label decoding
 
 ---
 
-## Frontend Setup
+## Noise Service
 
-Navigate to the frontend directory
+Responsible for:
 
-```bash
-cd frontend
-```
+- RMS calculation
+- Noise estimation
+- Day/Night determination
 
-Install dependencies
+---
 
-```bash
-npm install
-```
+## Compliance Service
 
-Configure environment variables
+Responsible for:
 
-```env
-VITE_API_URL=http://localhost:8000
-```
+- Legal limit lookup
+- Compliance evaluation
+- Recommendation generation
 
-Run the application
+---
 
-```bash
-npm run dev
-```
+## Severity Service
 
-Frontend available at
+Responsible for assigning:
 
-```
-http://localhost:5173
-```
+- Low
+- Moderate
+- High
+- Critical
+
+---
+
+## Risk Service
+
+Responsible for computing:
+
+- Risk Score
+- Risk Level
+
+---
+
+# Current Workflow
+
+1. User uploads a WAV file.
+2. User selects the venue type.
+3. User selects the recording time.
+4. Frontend sends the request to the FastAPI backend.
+5. Backend estimates the sound pressure level.
+6. Backend classifies the sound source using the CNN.
+7. Backend determines whether the recording occurred during the day or night.
+8. Compliance is evaluated against environmental regulations.
+9. Severity and risk are calculated.
+10. Recommendations are generated.
+11. Results are saved to PostgreSQL.
+12. The analysis report is returned to the frontend and displayed.
 
 ---
 
@@ -337,219 +331,52 @@ http://localhost:5173
 
 ## Frontend
 
-Hosted on Render Static Site
+Hosted on Render
 
+```
 https://urban-noise-governance-system.onrender.com
+```
+
+---
 
 ## Backend
 
-Hosted on Render Web Service
+Hosted on Render
 
-https://noisegov-api.onrender.com
+```
+https://ungs-docker.onrender.com
+```
+
+---
 
 ## Database
 
-PostgreSQL hosted on Render
+PostgreSQL 18
 
-Deployment verification included:
-
-- Backend health endpoint
-- Frontend connectivity
-- API communication
-- Database connectivity
-- PDF generation
-- End-to-end prediction workflow
+Hosted on Render
 
 ---
 
-# REST API
+# Future Improvements
 
-## Health Check
-
-```
-GET /
-```
-
-```
-GET /health
-```
-
-## Documentation
-
-```
-GET /docs
-```
-
-## Noise Analysis
-
-```
-POST /analysis/predict
-```
-
-Input:
-
-- WAV audio
-- Venue
-- Time period
-
-Output:
-
-- Predicted class
-- Estimated dB
-- Compliance status
-- Governance risk score
-- Recommendations
-- Generated report
-
----
-
-# Testing Strategy
-
-The application was tested using multiple testing strategies to validate functionality and deployment.
-
-## Functional Testing
-
-Validated:
-
-- Audio upload
-- File validation
-- CNN inference
-- dB estimation
-- Compliance evaluation
-- Risk score computation
-- PDF generation
-- Dashboard updates
-- History retrieval
-
-## Input Validation Testing
-
-Different data values were tested including:
-
-- Different urban sound recordings
-- Different venue selections
-- Different operational time periods
-- Invalid file handling
-
-## Integration Testing
-
-Verified interactions between:
-
-- React Frontend
-- FastAPI Backend
-- CNN Model
-- PostgreSQL Database
-- PDF Generation Service
-
-## Deployment Testing
-
-Verified after deployment on Render by confirming:
-
-- API accessibility
-- Frontend accessibility
-- Database connectivity
-- End-to-end analysis workflow
-
----
-
-# Performance Evaluation
-
-The deployed application was tested on multiple devices and browsers.
-
-| Device     | Browser | Result |
-| ---------- | ------- | ------ |
-| Windows 11 | Chrome  | Passed |
-| Windows 11 | Edge    | Passed |
-| Android    | Chrome  | Passed |
-| iPhone     | Safari  | Passed |
-
-The application demonstrated responsive performance and consistent functionality across tested environments.
-
----
-
-# Testing Results
-
-The demonstration video includes successful execution of:
-
-- WAV file upload
-- Noise classification
-- Venue-based analysis
-- Time-aware compliance evaluation
-- Governance risk assessment
-- Dashboard statistics
-- Analysis history retrieval
+- User authentication (JWT)
+- User-specific analysis history
 - PDF report generation
-
----
-
-# Analysis of Results
-
-The developed system successfully achieved the primary objectives defined during the project proposal.
-
-The CNN model accurately classified urban acoustic events and enabled context-aware governance analysis beyond traditional decibel monitoring. Integration of sound classification with compliance evaluation and governance risk assessment demonstrated the practical application of machine learning in environmental management.
-
-Deployment of both the frontend and backend validated the feasibility of providing noise analysis as a web-based service. PostgreSQL integration enabled persistent storage of historical analyses, while automated PDF generation improved reporting capabilities.
-
-The system therefore extends conventional environmental noise monitoring by incorporating contextual information necessary for evidence-based governance and decision-making.
-
----
-
-# Discussion
-
-The milestones achieved throughout the project demonstrate the successful integration of machine learning, software engineering, and environmental governance principles.
-
-Developing the CNN classification model established the core intelligent component of the application, while subsequent integration with FastAPI, PostgreSQL, and the React frontend transformed the research prototype into a deployable decision-support system.
-
-The deployed application provides stakeholders with automated noise analysis, regulatory compliance evaluation, and governance recommendations through an accessible web interface. This demonstrates how machine learning can contribute to smarter urban management and sustainable city planning.
-
----
-
-# Recommendations and Future Work
-
-Future improvements include:
-
-- User authentication and role-based access control
-- Real-time environmental monitoring using IoT sensors
-- Mobile application development
-- Live audio streaming support
-- Expanded urban sound datasets
-- Improved CNN architectures for higher classification accuracy
-- GIS-based visualization of noise hotspots
-- Integration with national environmental monitoring systems
-- Multi-language reporting
-- Automated alert notifications for regulatory violations
-
----
-
-# Visuals
-
-The following Visuals are demonstrated in the accompanying project video:
-
-- Landing Page
-- Dashboard
-- Analysis Page
-- Results Page
-- History Page
-
----
-
-# Demonstration Video
-
-https://drive.google.com/file/d/1tKlUI6ZHv2f32MKb6ltGrrvTpPrpj6lI/view?usp=sharing
+- Interactive dashboard charts
+- Live environmental monitoring
+- Mobile application
+- GIS-based noise heatmaps
+- Kigali-specific model fine-tuning
+- Government reporting tools
 
 ---
 
 # Author
 
-**David Cyubahiro**
+David Cyubahiro
 
 Bachelor of Science in Machine Learning
 
-African Leadership University (ALU)
+Capstone Project
 
-Capstone Project 2026
-
----
-
-# License
-
-This project was developed for academic purposes as part of the Bachelor of Science in Machine Learning Capstone Project at the African Leadership University.
+Urban Noise Governance System (UNGS)
