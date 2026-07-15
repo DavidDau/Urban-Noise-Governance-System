@@ -17,12 +17,16 @@ function Navbar() {
     <header className="navbar-wrap">
       <nav className="navbar">
         <Link to="/" className="navbar-logo" onClick={() => setMenuOpen(false)}>
-          <div className="navbar-logo-mark">
-            <div className="navbar-logo-dot" />
-          </div>
+          <img
+            src="/UNGS_Logo.svg"
+            alt="Urban Noise Governance System"
+            className="navbar-logo-mark"
+          />
           <div className="navbar-logo-text">
             <span className="navbar-logo-short">UNGS</span>
-            <span className="navbar-logo-full">Urban Noise Governance System</span>
+            <span className="navbar-logo-full">
+              Urban Noise Governance System
+            </span>
           </div>
         </Link>
 

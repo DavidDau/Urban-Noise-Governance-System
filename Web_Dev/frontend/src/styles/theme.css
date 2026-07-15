@@ -87,23 +87,23 @@
 }
 
 .navbar-logo-mark {
+  width: 42px;
+  height: 42px;
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--primary);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
+  color: #2d2b29;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
 }
 
-.navbar-logo-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #fff;
+[data-theme="dark"] .navbar-logo-mark {
+  color: #ff6e00;
 }
 
+.navbar-logo:hover .navbar-logo-mark {
+  transform: scale(1.04);
+}
 .navbar-logo-text {
   display: flex;
   flex-direction: column;
