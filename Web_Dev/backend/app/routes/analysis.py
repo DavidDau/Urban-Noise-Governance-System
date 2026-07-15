@@ -85,8 +85,8 @@ async def analyze_audio(
 
             recommendation=recommendation,
 
-            risk_score=risk["score"],
-            risk_level=risk["level"],
+            risk_score=risk["risk_score"],
+            risk_level=risk["risk_level"],
         )
 
         db.add(report)
@@ -111,8 +111,8 @@ async def analyze_audio(
             "status": compliance["status"],
             "exceedance": compliance["exceedance"],
 
-            "risk_score": risk["score"],
-            "risk_level": risk["level"],
+            "risk_score": risk["risk_score"],
+            "risk_level": risk["risk_level"],
 
             "recommendation": recommendation
         }
