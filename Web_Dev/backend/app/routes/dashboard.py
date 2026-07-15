@@ -1,69 +1,83 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from app.database import SessionLocal
+from app.dependencies import get_db
 from app.models.report import AnalysisReport
 
 router = APIRouter()
 
 
 @router.get("/")
-def get_dashboard():
+def dashboard(db: Session = Depends(get_db)):
 
-    db = SessionLocal()
+    total_reports = db.query(AnalysisReport).count()
 
-    total_reports = db.query(
-        AnalysisReport
-    ).count()
+    compliant = (
+        db.query(AnalysisReport)
+        .filter(AnalysisReport.status == "Compliant")
+        .count()
+    )
 
-    average_db = db.query(
-        func.avg(
-            AnalysisReport.estimated_db
+    non_compliant = (
+        db.query(AnalysisReport)
+        .filter(AnalysisReport.status == "Non-Compliant")
+        .count()
+    )
+
+    average_db = (
+        db.query(func.avg(AnalysisReport.estimated_db))
+        .scalar()
+    )
+
+    average_risk = (
+        db.query(func.avg(AnalysisReport.risk_score))
+        .scalar()
+    )
+
+    source_distribution = (
+        db.query(
+            AnalysisReport.source,
+            func.count(AnalysisReport.id)
         )
-    ).scalar()
+        .group_by(AnalysisReport.source)
+        .all()
+    )
 
-    most_common_source = db.query(
-        AnalysisReport.source,
-        func.count(
-            AnalysisReport.source
-        ).label("count")
-    ).group_by(
-        AnalysisReport.source
-    ).order_by(
-        func.count(
-            AnalysisReport.source
-        ).desc()
-    ).first()
-
-    compliant_count = db.query(
-        AnalysisReport
-    ).filter(
-        AnalysisReport.status == "Compliant"
-    ).count()
-
-    compliance_rate = 0
-
-    if total_reports > 0:
-        compliance_rate = round(
-            (compliant_count / total_reports) * 100,
-            2
+    severity_distribution = (
+        db.query(
+            AnalysisReport.severity,
+            func.count(AnalysisReport.id)
         )
-
-    recent_reports = db.query(
-        AnalysisReport
-    ).order_by(
-        AnalysisReport.id.desc()
-    ).limit(5).all()
-
-    db.close()
+        .group_by(AnalysisReport.severity)
+        .all()
+    )
 
     return {
+
         "total_reports": total_reports,
-        "average_db": round(average_db or 0, 2),
-        "most_common_source":
-            most_common_source[0]
-            if most_common_source
-            else "N/A",
-        "compliance_rate": compliance_rate,
-        "recent_reports": recent_reports
+
+        "compliant_reports": compliant,
+
+        "non_compliant_reports": non_compliant,
+
+        "average_noise_db": round(average_db or 0, 2),
+
+        "average_risk_score": round(average_risk or 0, 2),
+
+        "sources": [
+            {
+                "source": s,
+                "count": c
+            }
+            for s, c in source_distribution
+        ],
+
+        "severity": [
+            {
+                "severity": s,
+                "count": c
+            }
+            for s, c in severity_distribution
+        ]
     }
