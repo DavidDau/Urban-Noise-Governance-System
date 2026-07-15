@@ -70,6 +70,8 @@ async def analyze_audio(
 
         # Save analysis to database
         report = AnalysisReport(
+            user_id=None,
+
             source=source,
             confidence=round(confidence, 4),
 
@@ -83,10 +85,10 @@ async def analyze_audio(
             status=compliance["status"],
             exceedance=compliance["exceedance"],
 
-            recommendation=recommendation,
-
             risk_score=risk["risk_score"],
             risk_level=risk["risk_level"],
+
+            recommendation=recommendation,
         )
 
         db.add(report)
