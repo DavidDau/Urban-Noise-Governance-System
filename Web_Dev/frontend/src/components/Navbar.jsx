@@ -18,7 +18,7 @@ function Navbar() {
       <nav className="navbar">
         <Link to="/" className="navbar-logo" onClick={() => setMenuOpen(false)}>
           <img
-            src="/UNGS_Logo.svg"
+            src={isDark ? "/UNGS_Logo_dark.svg" : "/UNGS_Logo_light.svg"}
             alt="Urban Noise Governance System"
             className="navbar-logo-mark"
           />
