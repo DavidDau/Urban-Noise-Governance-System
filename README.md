@@ -16,7 +16,7 @@ The **Urban Noise Governance System** is a full-stack machine learning applicati
 
 The system applies deep learning and environmental noise analysis to classify urban acoustic events, estimate sound pressure levels, evaluate compliance with Rwanda's environmental noise regulations, compute governance risk scores, and generate comprehensive PDF reports.
 
-Unlike traditional noise monitoring systems that rely solely on sound intensity measurements, this project combines **context-aware sound classification** with regulatory compliance analysis to support informed decision-making for urban planners, regulators, businesses, and environmental authorities.
+Unlike traditional noise monitoring systems that rely solely on sound intensity measurements, this project will combine **context-aware sound classification** with regulatory compliance analysis to support informed decision-making for urban planners, regulators, businesses, and environmental authorities.
 
 ---
 
