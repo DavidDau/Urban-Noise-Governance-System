@@ -14,6 +14,17 @@ const VENUE_OPTIONS = [
   "Non-Soundproof Venue",
 ];
 
+// Convert UTC timestamp to Rwanda local time
+function formatDate(dateString) {
+  if (!dateString) return "";
+
+  return new Date(dateString + "Z").toLocaleString("en-RW", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Africa/Kigali",
+  });
+}
+
 function HistoryPage() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +44,7 @@ function HistoryPage() {
         setLoading(false);
       }
     };
+
     loadReports();
   }, []);
 
@@ -40,8 +52,10 @@ function HistoryPage() {
     .filter((report) => {
       const venueMatch =
         venueFilter === "All" || report.venue_type === venueFilter;
+
       const timeMatch =
         timeFilter === "All" || report.time_period === timeFilter;
+
       return venueMatch && timeMatch;
     })
     .sort((a, b) => (sortOrder === "asc" ? a.id - b.id : b.id - a.id));
@@ -51,7 +65,7 @@ function HistoryPage() {
       <div className="page">
         <div className="page-loading">
           <span className="spinner" aria-hidden="true" />
-          Loading history…
+          Loading history...
         </div>
       </div>
     );
@@ -60,15 +74,18 @@ function HistoryPage() {
   return (
     <div className="page">
       <header className="page-header">
-        <h1>Analysis history</h1>
-        <p>Past noise analyses with compliance status and governance scores.</p>
+        <h1>Analysis History</h1>
+        <p>
+          Browse previous analyses, review compliance results, and download
+          official reports.
+        </p>
       </header>
 
       {reports.length === 0 ? (
         <EmptyState
           icon="📂"
           title="No analyses yet"
-          message="Your completed noise analyses will appear here. Upload your first recording to get started."
+          message="Run your first analysis to populate the history."
         />
       ) : (
         <>
@@ -76,63 +93,70 @@ function HistoryPage() {
             <select
               value={venueFilter}
               onChange={(e) => setVenueFilter(e.target.value)}
-              aria-label="Filter by venue"
             >
-              {VENUE_OPTIONS.map((v) => (
-                <option key={v} value={v}>
-                  {v === "All" ? "All venues" : v}
+              {VENUE_OPTIONS.map((venue) => (
+                <option key={venue} value={venue}>
+                  {venue === "All" ? "All Venues" : venue}
                 </option>
               ))}
             </select>
+
             <select
               value={timeFilter}
               onChange={(e) => setTimeFilter(e.target.value)}
-              aria-label="Filter by time period"
             >
-              <option value="All">All times</option>
+              <option value="All">All Times</option>
               <option value="Day">Day</option>
               <option value="Night">Night</option>
             </select>
+
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              aria-label="Sort order"
             >
-              <option value="desc">Newest first</option>
-              <option value="asc">Oldest first</option>
+              <option value="desc">Newest First</option>
+              <option value="asc">Oldest First</option>
             </select>
           </div>
 
           {filteredReports.length === 0 ? (
             <EmptyState
-              icon="🔎"
+              icon="🔍"
               title="No matching reports"
-              message="Try adjusting your filters or run a new analysis."
+              message="Try changing your filters."
             />
           ) : (
             <div className="history-grid">
               {filteredReports.map((report) => {
-                const isExpanded = expandedId === report.id;
+                const expanded = expandedId === report.id;
+
                 return (
                   <article key={report.id} className="history-card">
                     <div className="history-card-header">
                       <h2 className="history-card-source">{report.source}</h2>
+
                       <StatusBadge label={report.status} type="status" />
                     </div>
+
                     <p className="history-card-db">{report.estimated_db} dB</p>
+
                     <div className="history-card-meta">
                       <StatusBadge label={report.severity} type="severity" />
+
                       {report.risk_level && (
                         <StatusBadge label={report.risk_level} type="risk" />
                       )}
                     </div>
+
                     <p className="history-card-date">
-                      {report.venue_type} · {report.time_period}
+                      {report.venue_type}
+                      {" • "}
+                      {report.time_period}
                       {report.created_at &&
-                        ` · ${new Date(report.created_at).toLocaleString()}`}
+                        ` • ${formatDate(report.created_at)}`}
                     </p>
 
-                    {isExpanded && (
+                    {expanded && (
                       <div className="history-card-details">
                         <div className="result-row">
                           <span>Confidence</span>
@@ -142,14 +166,16 @@ function HistoryPage() {
                               : "N/A"}
                           </span>
                         </div>
+
                         <div className="result-row">
-                          <span>Legal limit</span>
+                          <span>Legal Limit</span>
                           <span>
                             {report.legal_limit != null
                               ? `${report.legal_limit} dB`
                               : "N/A"}
                           </span>
                         </div>
+
                         <div className="result-row">
                           <span>Exceedance</span>
                           <span>
@@ -158,14 +184,16 @@ function HistoryPage() {
                               : "N/A"}
                           </span>
                         </div>
+
                         <div className="result-row">
-                          <span>Risk score</span>
+                          <span>Risk Score</span>
                           <span>
                             {report.risk_score != null
                               ? `${report.risk_score}/100`
                               : "N/A"}
                           </span>
                         </div>
+
                         {report.recommendation && (
                           <p
                             className="result-recommendation"
@@ -174,9 +202,9 @@ function HistoryPage() {
                             {report.recommendation}
                           </p>
                         )}
+
                         <div className="btn-row">
                           <button
-                            type="button"
                             className="btn-dark"
                             onClick={() => downloadReport(report.id)}
                           >
@@ -187,14 +215,10 @@ function HistoryPage() {
                     )}
 
                     <button
-                      type="button"
                       className="history-toggle"
-                      onClick={() =>
-                        setExpandedId(isExpanded ? null : report.id)
-                      }
-                      aria-expanded={isExpanded}
+                      onClick={() => setExpandedId(expanded ? null : report.id)}
                     >
-                      {isExpanded ? "Hide details" : "View details"}
+                      {expanded ? "Hide details" : "View details"}
                     </button>
                   </article>
                 );
