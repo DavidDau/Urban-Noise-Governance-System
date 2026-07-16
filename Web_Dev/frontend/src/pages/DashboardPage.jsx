@@ -40,7 +40,9 @@ function DashboardPage() {
     <div className="page">
       <header className="page-header">
         <h1>Dashboard</h1>
-        <p>Overview of noise analyses, compliance trends, and recent reports.</p>
+        <p>
+          Overview of noise analyses, compliance trends, and recent reports.
+        </p>
       </header>
 
       {isEmpty ? (
@@ -59,7 +61,7 @@ function DashboardPage() {
             <div className="stat-card">
               <p className="stat-card-label">Average noise</p>
               <p className="stat-card-value stat-card-value--accent">
-                {data.average_db} dB
+                {data.average_noise_db} dB
               </p>
             </div>
             <div className="stat-card">
@@ -100,9 +102,14 @@ function DashboardPage() {
                   </p>
                 </article>
               ) : (
-                <article key={report.id} className="report-item report-item--row">
+                <article
+                  key={report.id}
+                  className="report-item report-item--row"
+                >
                   <span className="report-item-source">{report.source}</span>
-                  <span className="report-item-meta">{report.estimated_db} dB</span>
+                  <span className="report-item-meta">
+                    {report.estimated_db} dB
+                  </span>
                   <StatusBadge label={report.severity} type="severity" />
                   <StatusBadge label={report.status} type="status" />
                   <span className="report-item-meta">{report.venue_type}</span>
