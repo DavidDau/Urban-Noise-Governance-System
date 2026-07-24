@@ -894,34 +894,6 @@
   transform: translateY(-4px);
 }
 
-.dashboard-icon {
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  margin-bottom: 18px;
-  color: white;
-}
-
-.dashboard-icon.orange {
-  background: #ff6e00;
-}
-
-.dashboard-icon.green {
-  background: #16a34a;
-}
-
-.dashboard-icon.blue {
-  background: #2563eb;
-}
-
-.dashboard-icon.red {
-  background: #ef4444;
-}
-
 .dashboard-label {
   color: var(--muted);
   font-size: 0.9rem;
