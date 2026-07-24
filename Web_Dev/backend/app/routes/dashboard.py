@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from sqlalchemy import func
+from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
 from app.models.report import AnalysisReport
@@ -77,6 +77,7 @@ def dashboard(db: Session = Depends(get_db)):
             func.count(AnalysisReport.id)
         )
         .group_by(AnalysisReport.source)
+        .order_by(func.count(AnalysisReport.id).desc())
         .all()
     )
 
@@ -98,6 +99,7 @@ def dashboard(db: Session = Depends(get_db)):
             func.count(AnalysisReport.id)
         )
         .group_by(AnalysisReport.severity)
+        .order_by(func.count(AnalysisReport.id).desc())
         .all()
     )
 
@@ -120,52 +122,32 @@ def dashboard(db: Session = Depends(get_db)):
         .all()
     )
 
-    recent_reports = []
-
-    for report in recent:
-
-        recent_reports.append({
-
+    recent_reports = [
+        {
             "id": report.id,
-
             "source": report.source,
-
-            "estimated_db": report.estimated_db,
-
+            "estimated_db": round(report.estimated_db, 2),
             "severity": report.severity,
-
             "status": report.status,
-
             "venue_type": report.venue_type,
-
-            "created_at": report.created_at.isoformat()
-
-        })
+            "created_at": report.created_at.isoformat(),
+        }
+        for report in recent
+    ]
 
     # ---------------------------------------------------------
     # Response
     # ---------------------------------------------------------
 
     return {
-
         "total_reports": total_reports,
-
         "compliant_reports": compliant_reports,
-
         "non_compliant_reports": non_compliant_reports,
-
         "average_noise_db": round(average_noise, 2),
-
         "average_risk_score": round(average_risk, 2),
-
         "compliance_rate": compliance_rate,
-
         "most_common_source": most_common_source,
-
         "sources": source_distribution,
-
         "severity": severity_distribution,
-
-        "recent_reports": recent_reports
-
+        "recent_reports": recent_reports,
     }
