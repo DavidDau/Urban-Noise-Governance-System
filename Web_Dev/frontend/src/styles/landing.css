@@ -1060,3 +1060,70 @@
   background: rgba(239, 68, 68, 0.15);
   color: #dc2626;
 }
+
+/* ===========================
+   RECENT ANALYSES TABLE
+=========================== */
+
+.recent-analysis-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 24px 28px 12px;
+}
+
+.recent-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-header,
+.recent-row {
+  display: grid;
+  grid-template-columns:
+    1.4fr
+    0.9fr
+    1fr
+    1.2fr
+    1.3fr
+    1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 18px 28px;
+}
+
+.recent-header {
+  font-weight: 700;
+  color: var(--text);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.recent-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: 0.2s;
+}
+
+.recent-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.recent-row:last-child {
+  border-bottom: none;
+}
+
+.recent-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.recent-row span:nth-child(2),
+.recent-row span:nth-child(6) {
+  color: var(--text);
+  font-weight: 600;
+}
