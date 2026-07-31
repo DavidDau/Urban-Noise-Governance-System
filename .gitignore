@@ -37,9 +37,7 @@ ml/data/features/
  
 # Trained Models (use Git LFS for large files)
 ml/saved_models/
-*.keras
 *.h5
-*.pkl
 *.joblib
 
 # Backend Generated Files
