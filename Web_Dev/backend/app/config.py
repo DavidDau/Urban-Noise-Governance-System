@@ -91,6 +91,15 @@ ENCODER_PATH = Path(
     )
 ).resolve()
 
+print("=" * 60)
+print(f"BASE_DIR     : {BASE_DIR}")
+print(f"MODEL_DIR    : {MODEL_DIR}")
+print(f"MODEL_PATH   : {MODEL_PATH}")
+print(f"MODEL EXISTS : {MODEL_PATH.exists()}")
+print(f"ENCODER_PATH : {ENCODER_PATH}")
+print(f"ENCODER EXISTS: {ENCODER_PATH.exists()}")
+print("=" * 60)
+
 # ==========================================================
 # Validate Paths
 # ==========================================================
