@@ -30,5 +30,5 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_MODEL_DIR = BASE_DIR / "ml_models"
 MODEL_DIR = Path(os.getenv("MODEL_DIR", str(DEFAULT_MODEL_DIR)))
 
-MODEL_PATH = Path(os.getenv("MODEL_PATH", str(MODEL_DIR / "urban_noise_cnn.keras")))
-ENCODER_PATH = Path(os.getenv("ENCODER_PATH", str(MODEL_DIR / "label_encoder.pkl")))
+MODEL_PATH = Path(os.getenv("MODEL_PATH", str(MODEL_DIR / "urban_noise_kigali.keras")))
+ENCODER_PATH = Path(os.getenv("ENCODER_PATH", str(MODEL_DIR / "label_encoder_kigali.pkl")))
