@@ -324,7 +324,7 @@ https://zenodo.org/records/3966543
 ## Clone Repository
 
 ```bash
-git clone -b Post https://github.com/DavidDau/Urban-Noise-Governance-System.git
+git clone -b post https://github.com/DavidDau/Urban-Noise-Governance-System.git
 
 cd Urban-Noise-Governance-System
 ```
