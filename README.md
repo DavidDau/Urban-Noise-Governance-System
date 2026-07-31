@@ -1,4 +1,4 @@
-# Urban Noise Classification and Governance Decision Support System
+# Urban Noise Governance System (UNGS)
 
 A Bachelor's Capstone Project that combines Deep Learning and Web Technologies to automatically classify environmental noise sources, estimate noise pollution levels, assess legal compliance, generate governance recommendations and visualize historical analyses through an interactive dashboard.
 
